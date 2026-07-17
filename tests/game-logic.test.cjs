@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 
 const source = `${fs.readFileSync('app.js', 'utf8')}
-globalThis.__sst = { newGame, cell, dir, move, moveTo, warpTo, fire, ensureLayout, visibleSector, command, helpText, get game() { return game; } };`;
+globalThis.__sst = { newGame, cell, dir, move, moveTo, warpTo, fire, orbit, transport, mine, ensureLayout, visibleSector, command, helpText, get game() { return game; } };`;
 const storage = new Map();
 const math = Object.create(Math);
 let seed = 123456789;
@@ -40,6 +40,26 @@ sst.warpTo(5, 2);
 assert.equal(game.pos.qx, 5, 'warp X Y must reach the requested quadrant X');
 assert.equal(game.pos.qy, 2, 'warp X Y must reach the requested quadrant Y');
 
+const planetQuadrant = sst.cell();
+planetQuadrant.k = 0;
+planetQuadrant.planet = true;
+planetQuadrant.planetClass = 1;
+planetQuadrant.crystalsAvailable = true;
+planetQuadrant.planetKnown = true;
+planetQuadrant.layout = Array(100).fill('.');
+planetQuadrant.layout[(4 - 1) * 10 + (5 - 1)] = 'P';
+game.pos = { qx: 5, qy: 2, sx: 4, sy: 4 };
+game.shieldsUp = false;
+sst.orbit();
+assert.equal(game.inOrbit, true, 'Enterprise can enter standard orbit beside a planet');
+sst.transport();
+assert.equal(game.landed, true, 'transport beams the landing party down');
+sst.mine();
+assert.equal(game.pendingCrystals, true, 'mining gives dilithium crystals to the landing party');
+sst.transport();
+assert.equal(game.landed, false, 'transport returns the landing party to the ship');
+assert.equal(game.crystals, true, 'returning from the planet transfers the crystals to Enterprise');
+
 const layout = sst.ensureLayout(sst.cell());
 layout[0] = '*';
 const before = [...layout];
@@ -51,11 +71,25 @@ current.k = 1;
 current.layout = Array(100).fill('.');
 current.layout[0] = 'K';
 game.energy = 5000;
-sst.fire('phaser');
+sst.fire('photon');
 assert.equal(current.k, 0, 'a destroyed enemy must be removed from quadrant state');
 assert.equal(current.layout.includes('K'), false, 'a destroyed enemy must disappear from the rendered sector');
 
 sst.command('help move');
 assert.match(game.output.text, /move n 2/, 'contextual help must document the requested command');
 assert.match(sst.helpText('warp'), /Варп-переход/, 'modal and command help share the same localized content');
+assert.match(sst.helpText(), /orbit · transport · mine · crystals · planets/, 'general help must include the planet commands');
+sst.command('help m');
+assert.match(game.output.text, /не найдена/, 'help must not expand a one-letter execution alias');
+
+sst.newGame({ length: 2, skill: 2, name: 'ALIAS' });
+const aliasGame = sst.game;
+for (const quadrant of aliasGame.map) { quadrant.layout = Array(100).fill('.'); quadrant.k = 0; }
+aliasGame.pos = { qx: 4, qy: 4, sx: 5, sy: 5 };
+sst.command('m 2 2');
+assert.equal(aliasGame.pos.sx, 2, 'm must invoke move with sector coordinates');
+assert.equal(aliasGame.pos.sy, 2, 'm must preserve the move coordinate order');
+sst.command('w 5 2');
+assert.equal(aliasGame.pos.qx, 5, 'w must invoke warp with quadrant coordinates');
+assert.equal(aliasGame.pos.qy, 2, 'w must preserve the warp coordinate order');
 console.log('game logic tests: passed');
