@@ -1,7 +1,8 @@
 # Super Star Trek — web mission
 
-Браузерная адаптация старой Super Star Trek: исходная C-версия находится в `sstsrc/`; её исторический источник — [almy.us/sst.html](https://almy.us/sst.html). Зависимости и сборка не нужны.
+Браузерная адаптация старой Super Star Trek: исходная C-версия находится тут — [almy.us/sst.html](https://almy.us/sst.html). Зависимости и сборка не нужны.
 
+Локальный запуск
 ```sh
 cd /Volumes/project/startrek
 python3 -m http.server 4173

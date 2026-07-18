@@ -5,20 +5,20 @@ const rand = (n = 1) => Math.random() * n;
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const SHORT_COMMANDS = { m: 'move', w: 'warp', s: 'shields', p: 'phasers', t: 'photons' };
 const UI = {
-  en: { newMission: 'New mission', resume: 'Resume mission', soundOn: '♫ Sound: on', soundOff: '♫ Sound: off', missionPrep: 'Mission preparation', captain: 'Captain callsign', duration: 'Duration', difficulty: 'Difficulty', short: 'Short · 7 dates', medium: 'Medium · 14 dates', long: 'Long · 28 dates', startInterface: 'Starting interface', console: 'Console', deck: 'Tactical Deck', launch: 'Launch Enterprise', back: 'Back', autoSave: 'Progress is saved automatically after every manoeuvre.', language: 'Language', help: 'Help', save: 'Save', localSector: 'Local sector', galaxy: 'Galaxy intelligence', knownSpace: 'Known space', commandConsole: 'Command console', lastResponse: 'Last response', cellLegend: 'Cell: enemies / base / stars', starChart: 'STAR CHART', status: 'Enterprise status', date: 'DATE', time: 'TIME', position: 'POSITION', condition: 'CONDITION', energy: 'ENERGY', shields: 'SHIELDS', torpedoes: 'TORPEDOES', enemies: 'ENEMIES', orbit: 'ORBIT', landing: 'LANDING', crystals: 'CRYSTALS', fleet: 'FLEET', standard: 'STANDARD', none: 'NONE', onPlanet: 'ON PLANET', onBoard: 'ON BOARD', withParty: 'WITH PARTY', cleared: 'CLEARED', commandReference: 'Command reference', missionHelp: 'Mission help', closeHelp: 'Close help', missionCompleted: 'Mission completed', federationVictory: 'Federation victory', missionEnded: 'Mission ended', close: 'Close', newGame: 'New mission', tacticalGrid: 'Local tactical sensor grid', clickWarp: 'click adjacent sector to warp', helm: 'Helm', captainOutput: "Captain's output", impulse: 'Impulse', phasers: 'Phasers', photon: 'Photon', shieldsAction: 'Shields', dock: 'Dock', transport: 'Transport', mine: 'Mine', scan: 'Scan', rest: 'Rest', orbitAction: 'Orbit', galaxyHint: 'Code: enemies / base / stars. Click an adjacent quadrant to set a warp target.' },
-  ru: { newMission: 'Новая миссия', resume: 'Продолжить миссию', soundOn: '♫ Звук: вкл.', soundOff: '♫ Звук: выкл.', missionPrep: 'Подготовка миссии', captain: 'Позывной капитана', duration: 'Длительность', difficulty: 'Сложность', short: 'Короткая · 7 дат', medium: 'Средняя · 14 дат', long: 'Длинная · 28 дат', startInterface: 'Интерфейс старта', console: 'Консольный', deck: 'Тактическая палуба', launch: 'Запустить Enterprise', back: 'Назад', autoSave: 'Сохранение работает автоматически после каждого манёвра.', language: 'Язык', help: 'Справка', save: 'Сохранить', localSector: 'Локальный сектор', galaxy: 'Разведка галактики', knownSpace: 'Известное пространство', commandConsole: 'Командная консоль', lastResponse: 'Последний ответ', cellLegend: 'Ячейка: враги / база / звёзды', starChart: 'ЗВЁЗДНАЯ КАРТА', status: 'Статус Enterprise', date: 'ДАТА', time: 'ВРЕМЯ', position: 'ПОЗИЦИЯ', condition: 'СОСТОЯНИЕ', energy: 'ЭНЕРГИЯ', shields: 'ЩИТЫ', torpedoes: 'ТОРПЕДЫ', enemies: 'ВРАГИ', orbit: 'ОРБИТА', landing: 'ВЫСАДКА', crystals: 'КРИСТАЛЛЫ', fleet: 'ФЛОТ', standard: 'СТАНДАРТНАЯ', none: 'НЕТ', onPlanet: 'НА ПЛАНЕТЕ', onBoard: 'НА БОРТУ', withParty: 'У ГРУППЫ', cleared: 'УНИЧТОЖЕНО', commandReference: 'Справочник команд', missionHelp: 'Справка', closeHelp: 'Закрыть справку', missionCompleted: 'Миссия завершена', federationVictory: 'Победа Федерации', missionEnded: 'Миссия окончена', close: 'Закрыть', newGame: 'Новая миссия', tacticalGrid: 'Локальная тактическая сетка', clickWarp: 'клик по соседнему квадранту — варп', helm: 'Штурвал', captainOutput: 'Вывод капитану', impulse: 'Импульс', phasers: 'Фазеры', photon: 'Торпеда', shieldsAction: 'Щиты', dock: 'Стыковка', transport: 'Транспорт', mine: 'Добыча', scan: 'Сканировать', rest: 'Отдых', orbitAction: 'Орбита', galaxyHint: 'Код: враги / база / звёзды. Клик по соседнему квадранту задаёт варп-цель.' },
+  en: { newMission: 'New mission', resume: 'Resume mission', soundOn: '♫ Sound: on', soundOff: '♫ Sound: off', missionPrep: 'Mission preparation', captain: 'Captain callsign', duration: 'Duration', difficulty: 'Difficulty', short: 'Short · 7 dates', medium: 'Medium · 14 dates', long: 'Long · 28 dates', startInterface: 'Starting interface', console: 'Console', deck: 'Tactical Deck', launch: 'Launch Enterprise', back: 'Back', autoSave: 'Progress is saved automatically after every manoeuvre.', language: 'Language', help: 'Help', save: 'Save', localSector: 'Local sector', galaxy: 'Galaxy intelligence', knownSpace: 'Known space', commandConsole: 'Command console', lastResponse: 'Last response', cellLegend: 'Cell: enemies / base / stars; P = planet', starChart: 'STAR CHART', status: 'Enterprise status', date: 'DATE', time: 'TIME', position: 'POSITION', condition: 'CONDITION', energy: 'ENERGY', shields: 'SHIELDS', torpedoes: 'TORPEDOES', enemies: 'ENEMIES', orbit: 'ORBIT', landing: 'LANDING', crystals: 'CRYSTALS', fleet: 'FLEET', standard: 'STANDARD', none: 'NONE', onPlanet: 'ON PLANET', onBoard: 'ON BOARD', withParty: 'WITH PARTY', cleared: 'CLEARED', commandReference: 'Command reference', missionHelp: 'Mission help', closeHelp: 'Close help', missionCompleted: 'Mission completed', federationVictory: 'Federation victory', missionEnded: 'Mission ended', close: 'Close', newGame: 'New mission', tacticalGrid: 'Local tactical sensor grid', clickWarp: 'click adjacent sector to warp', captainOutput: "Captain's output", sector: 'Sector', phasers: 'Phasers', photon: 'Photon', shieldsAction: 'Shields', dock: 'Dock', transport: 'Transport', mine: 'Mine', scan: 'Long scan', rest: 'Rest', orbitAction: 'Orbit', galaxyHint: 'Code: enemies / base / stars; P marks a planet. Click an adjacent quadrant to set a warp target.' },
+  ru: { newMission: 'Новая миссия', resume: 'Продолжить миссию', soundOn: '♫ Звук: вкл.', soundOff: '♫ Звук: выкл.', missionPrep: 'Подготовка миссии', captain: 'Позывной капитана', duration: 'Длительность', difficulty: 'Сложность', short: 'Короткая · 7 дат', medium: 'Средняя · 14 дат', long: 'Длинная · 28 дат', startInterface: 'Интерфейс старта', console: 'Консольный', deck: 'Тактическая палуба', launch: 'Запустить Enterprise', back: 'Назад', autoSave: 'Сохранение работает автоматически после каждого манёвра.', language: 'Язык', help: 'Справка', save: 'Сохранить', localSector: 'Локальный сектор', galaxy: 'Разведка галактики', knownSpace: 'Известное пространство', commandConsole: 'Командная консоль', lastResponse: 'Последний ответ', cellLegend: 'Ячейка: враги / база / звёзды; P = планета', starChart: 'ЗВЁЗДНАЯ КАРТА', status: 'Статус Enterprise', date: 'ДАТА', time: 'ВРЕМЯ', position: 'ПОЗИЦИЯ', condition: 'СОСТОЯНИЕ', energy: 'ЭНЕРГИЯ', shields: 'ЩИТЫ', torpedoes: 'ТОРПЕДЫ', enemies: 'ВРАГИ', orbit: 'ОРБИТА', landing: 'ВЫСАДКА', crystals: 'КРИСТАЛЛЫ', fleet: 'ФЛОТ', standard: 'СТАНДАРТНАЯ', none: 'НЕТ', onPlanet: 'НА ПЛАНЕТЕ', onBoard: 'НА БОРТУ', withParty: 'У ГРУППЫ', cleared: 'УНИЧТОЖЕНО', commandReference: 'Справочник команд', missionHelp: 'Справка', closeHelp: 'Закрыть справку', missionCompleted: 'Миссия завершена', federationVictory: 'Победа Федерации', missionEnded: 'Миссия окончена', close: 'Закрыть', newGame: 'Новая миссия', tacticalGrid: 'Локальная тактическая сетка', clickWarp: 'клик по соседнему квадранту — варп', captainOutput: 'Вывод капитану', sector: 'Сектор', phasers: 'Фазеры', photon: 'Торпеда', shieldsAction: 'Щиты', dock: 'Стыковка', transport: 'Транспорт', mine: 'Добыча', scan: 'Дальний скан', rest: 'Отдых', orbitAction: 'Орбита', galaxyHint: 'Код: враги / база / звёзды; P отмечает планету. Клик по соседнему квадранту задаёт варп-цель.' },
 };
 function t(key) { return UI[ui.language]?.[key] || UI.en[key] || key; }
 let game = null;
-let ui = { screen: 'intro', view: 'console', language: (typeof localStorage !== 'undefined' && localStorage.getItem('sst-web-language')) || 'en', music: false, helpOpen: false, commandHistory: [], historyIndex: 0, commandDraft: '' };
+let ui = { screen: 'intro', view: 'console', language: (typeof localStorage !== 'undefined' && localStorage.getItem('sst-web-language')) || 'en', music: false, intelHints: false, helpOpen: false, outputOpen: false, crystalConfirmOpen: false, commandHistory: [], historyIndex: 0, commandDraft: '' };
 const m = (ru, en) => ui.language === 'ru' ? ru : en;
 
 const HELP_RU = {
-  overview: ['СПРАВКА ПО МИССИИ', 'Цель — уничтожить весь вражеский флот до окончания выделенного времени. Галактика состоит из 8×8 квадрантов; каждый квадрант — из 10×10 секторов. Код на карте: враги / база / звёзды. Состояние автоматически сохраняется в браузере.'],
-  scan: ['help scan', 'Показывает краткое сканирование текущего квадранта: местоположение Enterprise, врагов, звёзд, планет и базы. Экран сканирования не накапливается: в Console всегда остаётся только результат последней команды. Синоним: srscan.'],
-  chart: ['help chart', 'Показывает известную часть галактики. В каждой ячейке три цифры: враги / база / звёзды. Неизведанные квадранты отмечены «···». Синоним: lrscan.'],
+  overview: ['СПРАВКА ПО МИССИИ', 'Цель — уничтожить весь вражеский флот до окончания выделенного времени. Галактика состоит из 8×8 квадрантов; каждый квадрант — из 10×10 секторов. Код на карте: враги / база / звёзды; P отмечает найденную планету. Состояние автоматически сохраняется в браузере.'],
+  scan: ['help scan', 'Дальнее сканирование 3×3 вокруг Enterprise. Оно открывает текущий и соседние квадранты, показывает врагов, базы, звёзды и найденные планеты. Локальная тактическая сетка уже всегда показывает текущий квадрант. Синонимы: lrscan и srscan.'],
+  chart: ['help chart', 'Показывает уже разведанную часть галактики. В каждой ячейке три цифры: враги / база / звёзды; P в конце означает найденную планету. Неизведанные квадранты отмечены «····».'],
   move: ['help move', 'Импульсное перемещение по секторам. Формат направления: move <n|s|e|w|ne|nw|se|sw> [число], например move n 2. Формат координат: move <sector X> <sector Y>, например move 1 1. Для цели в другом квадранте: move <quadrant X> <quadrant Y> <sector X> <sector Y>, например move 2 1 5 5. Корабль проходит прямой маршрут и останавливается перед любым объектом на пути. Синоним: impulse.\n\nКороткий вызов: m. Пример: m 2 2.'],
-  warp: ['help warp', 'Варп-переход. Формат направления: warp <n|s|e|w|ne|nw|se|sw>. Также можно указать целевой квадрант напрямую: warp <quadrant X> <quadrant Y>, например warp 5 2. Enterprise прибывает в ближайший свободный сектор центра указанного квадранта.\n\nКороткий вызов: w. Пример: w 5 2.'],
+  warp: ['help warp', 'Варп-переход. Формат направления: warp <n|s|e|w|ne|nw|se|sw>. Также можно указать целевой квадрант напрямую: warp <quadrant X> <quadrant Y>, например warp 5 2. Enterprise прибывает в ближайший свободный сектор центра указанного квадранта.\n\nВарп-фактор: warp <1…10>, например warp 3. Высокий фактор ускоряет переход, но требует больше энергии; низкий — экономнее, но медленнее.\n\nКороткий вызов: w. Примеры: w 5 2 и w 3.'],
   phasers: ['help phasers', 'Расходует энергию, чтобы нанести урон всем вражеским судам в квадранте. После залпа карта сразу обновится: уничтоженные корабли исчезают.\n\nКороткий вызов: p.'],
   photons: ['help photons', 'Выпускает одну фотонную торпеду; её урон выше, но запас ограничен. Команда: photons. После залпа карта сразу обновится. Синоним: torpedoes.\n\nКороткий вызов: t.'],
   shields: ['help shields', 'Поднимает или опускает щиты. Команда shields переключает состояние. Щиты поглощают вражеский огонь, пока не иссякнут.\n\nКороткий вызов: s.'],
@@ -27,18 +27,18 @@ const HELP_RU = {
   transport: ['help transport', 'Транспортировка посадочной группы. Требуется стандартная орбита, опущенные щиты и известная планета. Команда transport высаживает группу; повторная transport возвращает её на Enterprise.'],
   mine: ['help mine', 'Добыча дилития на поверхности. Требуется высаженная посадочная группа и планета с кристаллами. Операция занимает звёздное время, после чего сырые кристаллы окажутся на Enterprise.'],
   crystals: ['help crystals', 'Активирует добытые кристаллы для аварийного восстановления энергии, когда энергия ниже 1000. Сначала команда выводит предупреждение; для подтверждения введите crystals confirm. Операция опасна.'],
-  planets: ['help planets', 'Выводит перечень обследованных планет, их класс и данные о дилитии. Планета становится известной после короткого сканирования или входа в орбиту.'],
+  planets: ['help planets', 'Выводит перечень планет, найденных дальним сканированием или при входе в орбиту, их класс и данные о дилитии.'],
   rest: ['help rest', 'Проходит 0.5 звёздной даты и частично восстанавливает энергию. Не отдыхайте в квадранте с врагами: они могут открыть огонь.'],
   status: ['help status', 'Показывает дату, оставшееся время, позицию, состояние корабля, энергию, щиты, торпеды и прогресс миссии. Синоним: report.'],
   save: ['help save', 'Принудительно сохраняет миссию в localStorage браузера. Обычно этого не требуется: сохранение выполняется автоматически после каждого действия. Синоним: freeze.'],
   quit: ['help quit', 'Приостанавливает текущую миссию. Состояние остаётся сохранённым — его можно продолжить с заставки.'],
 };
 const HELP_EN = {
-  overview: ['MISSION HELP', 'Destroy the entire enemy fleet before time runs out. The galaxy contains 8×8 quadrants; each quadrant contains a 10×10 sector grid. Map code: enemies / base / stars. Progress is saved in this browser.'],
-  scan: ['help scan', 'Shows a short-range scan of the current quadrant: Enterprise, enemies, stars, planets, and a starbase. The Console keeps only the latest command response. Alias: srscan.'],
-  chart: ['help chart', 'Shows the known galaxy. Each cell contains three digits: enemies / base / stars. Unexplored quadrants are shown as «···». Alias: lrscan.'],
+  overview: ['MISSION HELP', 'Destroy the entire enemy fleet before time runs out. The galaxy contains 8×8 quadrants; each quadrant contains a 10×10 sector grid. Map code: enemies / base / stars; P marks a detected planet. Progress is saved in this browser.'],
+  scan: ['help scan', 'Runs a 3×3 long-range scan around Enterprise. It reveals the current and neighbouring quadrants, reporting enemies, starbases, stars, and detected planets. The local tactical grid already displays the current quadrant. Aliases: lrscan and srscan.'],
+  chart: ['help chart', 'Shows the already surveyed galaxy. Each cell contains three digits: enemies / base / stars; a trailing P marks a detected planet. Unexplored quadrants are shown as «····».'],
   move: ['help move', 'Impulse movement by sectors. Direction format: move <n|s|e|w|ne|nw|se|sw> [number], for example move n 2. Coordinate format: move <sector X> <sector Y>, for example move 1 1. A target in another quadrant uses move <quadrant X> <quadrant Y> <sector X> <sector Y>, for example move 2 1 5 5. Enterprise follows a straight route and stops before any object on its path. Alias: impulse.\n\nShort invocation: m. Example: m 2 2.'],
-  warp: ['help warp', 'Warp movement. Direction format: warp <n|s|e|w|ne|nw|se|sw>. You can also specify a target quadrant directly: warp <quadrant X> <quadrant Y>, for example warp 5 2. Enterprise arrives in the nearest free sector to that quadrant’s centre.\n\nShort invocation: w. Example: w 5 2.'],
+  warp: ['help warp', 'Warp movement. Direction format: warp <n|s|e|w|ne|nw|se|sw>. You can also specify a target quadrant directly: warp <quadrant X> <quadrant Y>, for example warp 5 2. Enterprise arrives in the nearest free sector to that quadrant’s centre.\n\nWarp factor: warp <1…10>, for example warp 3. A higher factor shortens travel time but uses more energy; a lower factor is slower and more economical.\n\nShort invocation: w. Examples: w 5 2 and w 3.'],
   phasers: ['help phasers', 'Uses energy to damage enemy vessels in the quadrant. The map updates immediately after a volley: destroyed ships disappear.\n\nShort invocation: p.'],
   photons: ['help photons', 'Fires one photon torpedo. Its damage is higher, but ammunition is limited. Command: photons. The map updates immediately after the volley. Alias: torpedoes.\n\nShort invocation: t.'],
   shields: ['help shields', 'Raises or lowers shields. The shields command toggles their state. Shields absorb enemy fire until depleted.\n\nShort invocation: s.'],
@@ -47,7 +47,7 @@ const HELP_EN = {
   transport: ['help transport', 'Transport the landing party. It requires standard orbit, lowered shields, and a known planet. transport beams the party down; a second transport returns it to Enterprise.'],
   mine: ['help mine', 'Mine dilithium on the surface. It requires a landing party and a planet with crystals. The operation costs stardate time; raw crystals return with the landing party.'],
   crystals: ['help crystals', 'Use recovered crystals for emergency energy recovery when energy is below 1000. The first command shows a warning; enter crystals confirm to proceed. This is dangerous.'],
-  planets: ['help planets', 'Lists surveyed planets, their class, and dilithium data. A planet becomes known after a short scan or entering orbit.'],
+  planets: ['help planets', 'Lists planets found by long-range scan or by entering orbit, together with their class and dilithium data.'],
   rest: ['help rest', 'Passes 0.5 stardates and partially restores energy. Do not rest in a hostile quadrant: enemies may fire.'],
   status: ['help status', 'Shows date, remaining time, position, ship condition, energy, shields, torpedoes, and mission progress. Alias: report.'],
   save: ['help save', 'Forces a game save in browser localStorage. This is normally unnecessary because the game saves after every action. Alias: freeze.'],
@@ -134,7 +134,7 @@ function newGame({ length = 2, skill = 2, name = 'КАПИТАН' }) {
     map: init.map, kills: 0, initialEnemies: init.enemies, bases: init.baseCount, inOrbit: false, landed: false, crystals: false, pendingCrystals: false, minedPlanets: [], log: [], output: null, sector: [], ended: false,
   };
   loadQuadrant(true);
-  ui.commandHistory = []; ui.historyIndex = 0; ui.commandDraft = '';
+  ui.helpOpen = false; ui.outputOpen = false; ui.crystalConfirmOpen = false; ui.commandHistory = []; ui.historyIndex = 0; ui.commandDraft = '';
   output(ui.language === 'ru'
     ? `ЗВЁЗДНАЯ ДАТА ${Math.floor(game.stardate)}.\n${game.initialEnemies} вражеских кораблей угрожают Федерации.\nВы — ${game.name}, командир U.S.S. Enterprise.\n\nМиссия: уничтожить флот до истечения ${game.time.toFixed(1)} звёздных дат. Базы снабжения: ${game.bases}.`
     : `STARDATE ${Math.floor(game.stardate)}.\n${game.initialEnemies} enemy ships threaten the Federation.\nYou are ${game.name}, commanding U.S.S. Enterprise.\n\nMission: destroy the fleet before ${game.time.toFixed(1)} stardates expire. Starbases: ${game.bases}.`, 'heading');
@@ -146,12 +146,13 @@ function output(text, kind = '') {
   game.output = item;
   game.log.push(item);
   if (game.log.length > 60) game.log.shift();
+  if (ui.view === 'deck' && !game.ended) ui.outputOpen = true;
 }
 function updateCondition() {
   const quadrant = cell();
   game.condition = quadrant.k ? 'RED' : game.energy < 1000 ? 'YELLOW' : 'GREEN';
 }
-function save() { if (game) localStorage.setItem(STORE, JSON.stringify({ game, ui: { view: ui.view, language: ui.language, music: ui.music } })); }
+function save() { if (game) localStorage.setItem(STORE, JSON.stringify({ game, ui: { view: ui.view, language: ui.language, music: ui.music, intelHints: ui.intelHints } })); }
 function resume() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORE));
@@ -160,7 +161,7 @@ function resume() {
     // Upgrade the first saved prototype where sector layout was deliberately transient.
     game.map.forEach(quadrant => { if (!Array.isArray(quadrant.layout)) quadrant.layout = null; ensurePlanetData(quadrant); });
     game.inOrbit ??= false; game.landed ??= false; game.crystals ??= false; game.pendingCrystals ??= false; game.minedPlanets ??= [];
-    ui.view = saved.ui?.view || 'console'; ui.language = saved.ui?.language || ui.language || 'en'; ui.music = !!saved.ui?.music; ui.screen = 'game'; ui.helpOpen = false; ui.commandHistory = []; ui.historyIndex = 0; ui.commandDraft = '';
+    ui.view = saved.ui?.view || 'console'; ui.language = saved.ui?.language || ui.language || 'en'; ui.music = !!saved.ui?.music; ui.intelHints = !!saved.ui?.intelHints; ui.screen = 'game'; ui.helpOpen = false; ui.outputOpen = false; ui.crystalConfirmOpen = false; ui.commandHistory = []; ui.historyIndex = 0; ui.commandDraft = '';
     loadQuadrant(true); if (!game.output) output(statusText(), 'system'); render(); return true;
   } catch { return false; }
 }
@@ -180,23 +181,38 @@ function renderSectorText() {
   for (let y = 1; y <= 10; y += 1) text += `${String(y).padStart(2)}  ${sector.slice((y - 1) * 10, y * 10).join(' ')}\n`;
   return text.trimEnd();
 }
+function intelCode(quadrant) { return `${quadrant.k}${quadrant.base ? 1 : 0}${quadrant.stars}${quadrant.planetKnown ? 'P' : '·'}`; }
 function scan() {
-  const quadrant = cell(); quadrant.known = true; game.sector = visibleSector(); ensurePlanetData(quadrant);
-  if (quadrant.planet) quadrant.planetKnown = true;
-  const planetReport = quadrant.planet ? (ui.language === 'ru' ? `\nПланета класса ${['M', 'N', 'O'][quadrant.planetClass - 1]}; дилитий: ${quadrant.crystalsAvailable ? 'обнаружен' : 'не обнаружен'}.` : `\nPlanet class ${['M', 'N', 'O'][quadrant.planetClass - 1]}; dilithium: ${quadrant.crystalsAvailable ? 'detected' : 'not detected'}.`) : '';
-  output(ui.language === 'ru'
-    ? `КРАТКИЙ СКАН — квадрант ${game.pos.qx},${game.pos.qy}\n${renderSectorText()}\n${quadrant.k ? `Обнаружено вражеских судов: ${quadrant.k}.` : 'Пространство спокойно.'}${planetReport}`
-    : `SHORT-RANGE SCAN — quadrant ${game.pos.qx},${game.pos.qy}\n${renderSectorText()}\n${quadrant.k ? `Enemy vessels detected: ${quadrant.k}.` : 'Space is quiet.'}${planetReport}`, 'system');
+  const scanned = []; const planets = [];
+  for (let y = Math.max(1, game.pos.qy - 1); y <= Math.min(8, game.pos.qy + 1); y += 1) {
+    for (let x = Math.max(1, game.pos.qx - 1); x <= Math.min(8, game.pos.qx + 1); x += 1) {
+      const quadrant = cell(x, y); ensurePlanetData(quadrant); quadrant.known = true;
+      if (quadrant.planet) { quadrant.planetKnown = true; planets.push(quadrant); }
+      scanned.push(quadrant);
+    }
+  }
+  const width = 4;
+  const columns = scanned.filter(quadrant => quadrant.y === scanned[0].y).map(quadrant => `Q${quadrant.x}`.padStart(width)).join(' ');
+  const rows = [];
+  for (let y = Math.max(1, game.pos.qy - 1); y <= Math.min(8, game.pos.qy + 1); y += 1) {
+    const row = scanned.filter(quadrant => quadrant.y === y).map(quadrant => intelCode(quadrant).padStart(width)).join(' ');
+    rows.push(`Q${y}  ${row}`);
+  }
+  const planetsReport = planets.length
+    ? m(`\nНайдены планеты: ${planets.map(quadrant => `Q${quadrant.x},${quadrant.y} (${['M', 'N', 'O'][quadrant.planetClass - 1]}, дилитий ${quadrant.crystalsAvailable ? 'есть' : 'нет'})`).join('; ')}.`, `\nPlanets detected: ${planets.map(quadrant => `Q${quadrant.x},${quadrant.y} (${['M', 'N', 'O'][quadrant.planetClass - 1]}, dilithium ${quadrant.crystalsAvailable ? 'present' : 'none'})`).join('; ')}.`)
+    : m('\nПланеты в зоне сканирования не обнаружены.', '\nNo planets detected in scan range.');
+  output(m(`ДАЛЬНЕЕ СКАНИРОВАНИЕ — Q${game.pos.qx},${game.pos.qy}\nКод: враги / база / звёзды / P\n     ${columns}\n${rows.join('\n')}${planetsReport}`, `LONG-RANGE SCAN — Q${game.pos.qx},${game.pos.qy}\nCode: enemies / base / stars / P\n     ${columns}\n${rows.join('\n')}${planetsReport}`), 'system');
 }
 function chart() {
-  output(`${galaxyText()}\n\n${ui.language === 'ru' ? 'Код каждой ячейки: враги / база / звёзды.' : 'Cell code: enemies / base / stars.'}`, 'system');
+  output(`${galaxyText()}\n\n${ui.language === 'ru' ? 'Код каждой ячейки: враги / база / звёзды / P (планета).' : 'Cell code: enemies / base / stars / P (planet).'}`, 'system');
 }
 function galaxyText() {
-  const lines = [t('starChart'), '     1   2   3   4   5   6   7   8'];
+  const columns = Array.from({ length: 8 }, (_, index) => String(index + 1).padStart(2).padEnd(4)).join(' ');
+  const lines = [t('starChart'), `     ${columns}`];
   for (let y = 1; y <= 8; y += 1) {
     const row = [];
-    for (let x = 1; x <= 8; x += 1) { const quadrant = cell(x, y); row.push(quadrant.known ? `${quadrant.k}${quadrant.base ? 1 : 0}${quadrant.stars}` : '...'); }
-    lines.push(`${String(y).padStart(2)}   ${row.map(value => value.padStart(3)).join(' ')}`);
+    for (let x = 1; x <= 8; x += 1) { const quadrant = cell(x, y); row.push(quadrant.known ? intelCode(quadrant) : '····'); }
+    lines.push(`${String(y).padStart(2)}   ${row.map(value => value.padStart(4)).join(' ')}`);
   }
   return lines.join('\n');
 }
@@ -244,6 +260,13 @@ function moveTo(qx, qy, sx, sy) {
   game.pos = { qx, qy, sx, sy }; loadQuadrant(true);
   output(m(`ИМПУЛЬС: маршрут завершён. Позиция Q${qx},${qy} / S${sx},${sy}; энергия −${fullCost}.`, `IMPULSE: route complete. Position Q${qx},${qy} / S${sx},${sy}; energy −${fullCost}.`), 'system'); return afterAction();
 }
+function setWarpFactor(factor) {
+  if (!Number.isInteger(factor) || factor < 1 || factor > 10) return commandFailure(m('Варп-фактор должен быть целым числом от 1 до 10.', 'Warp factor must be a whole number from 1 to 10.'));
+  if (game.warp === factor) return commandFailure(m(`Варп-фактор уже установлен: ${factor}.`, `Warp factor is already set to ${factor}.`));
+  game.warp = factor;
+  output(m(`Варп-фактор установлен: ${factor}. Более высокий фактор сокращает время перехода, но повышает расход энергии.`, `Warp factor set to ${factor}. Higher factors shorten travel time but increase energy use.`), 'system');
+  save(); render();
+}
 function warpTo(qx, qy) {
   if (game.ended) return;
   if (game.landed) return commandFailure(m('Посадочная группа на планете. Сначала используйте transport для возвращения на Enterprise.', 'The landing party is on the planet. Use transport to return it to Enterprise first.'));
@@ -252,7 +275,7 @@ function warpTo(qx, qy) {
   const distance = Math.hypot(qx - game.pos.qx, qy - game.pos.qy); if (!distance) return commandFailure(m('Enterprise уже находится в указанном квадранте.', 'Enterprise is already in the requested quadrant.'));
   const cost = Math.round((190 + rand(160)) * game.warp * distance); if (game.energy < cost) return commandFailure(m(`Недостаточно энергии для варп-перехода: требуется ${cost}.`, `Insufficient energy for warp: ${cost} required.`));
   const target = cell(qx, qy); const destination = findNearestEmpty(ensureLayout(target)); if (destination === undefined) return commandFailure(m('В указанном квадранте нет свободного сектора для выхода из варпа.', 'There is no free sector for warp arrival in that quadrant.'));
-  game.energy -= cost; if (spendTime(0.14 + 0.3 * distance)) return afterAction(false);
+  game.energy -= cost; if (spendTime(0.14 + (1.5 * distance) / game.warp)) return afterAction(false);
   game.pos = { qx, qy, sx: destination % 10 + 1, sy: Math.floor(destination / 10) + 1 }; loadQuadrant(true);
   output(m(`ВАРП ${game.warp.toFixed(1)}: переход в квадрант ${qx},${qy} завершён. Прибытие: S${game.pos.sx},${game.pos.sy}; энергия −${cost}.`, `WARP ${game.warp.toFixed(1)}: transfer to quadrant ${qx},${qy} complete. Arrival: S${game.pos.sx},${game.pos.sy}; energy −${cost}.`), 'system'); return afterAction();
 }
@@ -275,6 +298,7 @@ function attack() {
   return m(`\nОтветный огонь: щиты −${Math.round(absorbed)}, энергия −${Math.round(hit - absorbed)}.`, `\nReturn fire: shields −${Math.round(absorbed)}, energy −${Math.round(hit - absorbed)}.`);
 }
 function fire(kind) {
+  if (game.ended) return;
   const quadrant = cell();
   if (!quadrant.k) return commandFailure(m('На датчиках нет вражеских целей.', 'No enemy targets are on sensors.'));
   let damage;
@@ -288,12 +312,12 @@ function fire(kind) {
   }
   let destroyed = Math.min(quadrant.k, Math.floor(damage / (380 + game.skill * 60)));
   if (!destroyed && rand() > 0.4) destroyed = 1;
-  destroyed = removeEnemies(quadrant, destroyed); quadrant.k -= destroyed; game.kills += destroyed;
+  destroyed = removeEnemies(quadrant, destroyed); quadrant.k -= destroyed; game.kills += destroyed; game.time += destroyed;
   const response = quadrant.k ? attack() : m('\nКвадрант очищен от противника.', '\nQuadrant cleared of hostiles.');
   if (!quadrant.k && game.kills >= game.initialEnemies) end(m('Флот противника разгромлен. Федерация спасена.', 'The enemy fleet has been defeated. The Federation is saved.'));
   game.sector = visibleSector();
   if (game.ended) return afterAction(false);
-  output(m(`${kind === 'phaser' ? 'ФАЗЕРЫ' : 'ФОТОННЫЕ ТОРПЕДЫ'}: ${Math.round(damage)} ед. урона. ${destroyed ? `Уничтожено кораблей: ${destroyed}.` : 'Прямого попадания нет.'}${response}`, `${kind === 'phaser' ? 'PHASERS' : 'PHOTON TORPEDOES'}: ${Math.round(damage)} damage. ${destroyed ? `Ships destroyed: ${destroyed}.` : 'No direct hit.'}${response}`), destroyed ? 'system' : 'alert');
+  output(m(`${kind === 'phaser' ? 'ФАЗЕРЫ' : 'ФОТОННЫЕ ТОРПЕДЫ'}: ${Math.round(damage)} ед. урона. ${destroyed ? `Уничтожено кораблей: ${destroyed}. Отсрочка: +${destroyed} дн.` : 'Прямого попадания нет.'}${response}`, `${kind === 'phaser' ? 'PHASERS' : 'PHOTON TORPEDOES'}: ${Math.round(damage)} damage. ${destroyed ? `Ships destroyed: ${destroyed}. Time extension: +${destroyed} day${destroyed === 1 ? '' : 's'}.` : 'No direct hit.'}${response}`), destroyed ? 'system' : 'alert');
   afterAction(false);
 }
 function shields() { game.shieldsUp = !game.shieldsUp; output(m(`Щиты ${game.shieldsUp ? 'подняты' : 'опущены'}.`, `Shields ${game.shieldsUp ? 'raised' : 'lowered'}.`), 'system'); afterAction(false); }
@@ -361,12 +385,12 @@ function afterAction(enemies = true) {
 }
 function end(message) { game.ended = true; output(m(`КОНЕЦ МИССИИ\n${message}\nИтог: ${game.kills}/${game.initialEnemies} кораблей уничтожено.`, `MISSION ENDED\n${message}\nFinal score: ${game.kills}/${game.initialEnemies} ships destroyed.`), 'heading'); save(); }
 function statusText() {
-  if (ui.language === 'ru') return `СТАТУС ENTERPRISE\nЗвёздная дата: ${game.stardate.toFixed(1)}  |  Осталось: ${game.time.toFixed(1)}\nПозиция: Q${game.pos.qx},${game.pos.qy} / S${game.pos.sx},${game.pos.sy}\nСостояние: ${game.condition}\nЭнергия: ${Math.round(game.energy)}  Щиты: ${Math.round(game.shields)}  Торпеды: ${game.torps}\nОрбита: ${game.inOrbit ? 'стандартная' : 'нет'}  |  Посадочная группа: ${game.landed ? 'на планете' : 'на борту'}\nДилитиевые кристаллы: ${game.crystals ? 'на борту' : game.pendingCrystals ? 'у посадочной группы' : 'нет'}\nФлот: уничтожено ${game.kills} из ${game.initialEnemies}.`;
-  return `ENTERPRISE STATUS\nStardate: ${game.stardate.toFixed(1)}  |  Remaining: ${game.time.toFixed(1)}\nPosition: Q${game.pos.qx},${game.pos.qy} / S${game.pos.sx},${game.pos.sy}\nCondition: ${game.condition}\nEnergy: ${Math.round(game.energy)}  Shields: ${Math.round(game.shields)}  Torpedoes: ${game.torps}\nOrbit: ${game.inOrbit ? 'standard' : 'none'}  |  Landing party: ${game.landed ? 'on planet' : 'on board'}\nDilithium crystals: ${game.crystals ? 'on board' : game.pendingCrystals ? 'with landing party' : 'none'}\nFleet: ${game.kills} of ${game.initialEnemies} destroyed.`;
+  if (ui.language === 'ru') return `СТАТУС ENTERPRISE\nЗвёздная дата: ${game.stardate.toFixed(1)}  |  Осталось: ${game.time.toFixed(1)}\nПозиция: Q${game.pos.qx},${game.pos.qy} / S${game.pos.sx},${game.pos.sy}\nСостояние: ${game.condition}\nЭнергия: ${Math.round(game.energy)}  Щиты: ${Math.round(game.shields)}  Варп-фактор: ${game.warp}  Торпеды: ${game.torps}\nОрбита: ${game.inOrbit ? 'стандартная' : 'нет'}  |  Посадочная группа: ${game.landed ? 'на планете' : 'на борту'}\nДилитиевые кристаллы: ${game.crystals ? 'на борту' : game.pendingCrystals ? 'у посадочной группы' : 'нет'}\nФлот: уничтожено ${game.kills} из ${game.initialEnemies}.`;
+  return `ENTERPRISE STATUS\nStardate: ${game.stardate.toFixed(1)}  |  Remaining: ${game.time.toFixed(1)}\nPosition: Q${game.pos.qx},${game.pos.qy} / S${game.pos.sx},${game.pos.sy}\nCondition: ${game.condition}\nEnergy: ${Math.round(game.energy)}  Shields: ${Math.round(game.shields)}  Warp factor: ${game.warp}  Torpedoes: ${game.torps}\nOrbit: ${game.inOrbit ? 'standard' : 'none'}  |  Landing party: ${game.landed ? 'on planet' : 'on board'}\nDilithium crystals: ${game.crystals ? 'on board' : game.pendingCrystals ? 'with landing party' : 'none'}\nFleet: ${game.kills} of ${game.initialEnemies} destroyed.`;
 }
 function helpText(topic) {
   const help = helpItems();
-  const key = topic === 'srscan' ? 'scan' : topic === 'lrscan' ? 'chart' : topic === 'impulse' ? 'move' : topic === 'torpedoes' ? 'photons' : topic === 'report' ? 'status' : topic;
+  const key = topic === 'srscan' || topic === 'lrscan' ? 'scan' : topic === 'impulse' ? 'move' : topic === 'torpedoes' ? 'photons' : topic === 'report' ? 'status' : topic;
   if (key && help[key]) return help[key].join('\n\n');
   if (key) return ui.language === 'ru' ? `Справка по команде «${topic}» не найдена. Используйте полное имя команды, например: help move.` : `No help entry exists for «${topic}». Use the full command name, for example: help move.`;
   const listing = 'scan · chart · status · move · warp · phasers · photons · shields · dock · orbit · transport · mine · crystals · planets · rest · save · quit';
@@ -375,11 +399,12 @@ function helpText(topic) {
     : `${help.overview.join('\n\n')}\n\nCOMMANDS\n${listing}\n\nSHORT INVOCATIONS\nm = move · w = warp · s = shields · p = phasers · t = photons\nShort forms work only to run a command, never inside help.\n\nEnter help <command>, for example help move, for detailed guidance.`;
 }
 function command(input) {
+  if (game.ended) return;
   const [typedCommand, ...args] = input.toLowerCase().trim().split(/\s+/); if (!typedCommand) return;
   const cmd = SHORT_COMMANDS[typedCommand] || typedCommand;
   if (cmd === 'help' || cmd === 'commands') { output(helpText(args[0]), 'system'); save(); render(); return; }
-  if (cmd === 'scan' || cmd === 'srscan') { scan(); afterAction(false); return; }
-  if (cmd === 'chart' || cmd === 'lrscan') { chart(); afterAction(false); return; }
+  if (cmd === 'scan' || cmd === 'lrscan' || cmd === 'srscan') { scan(); afterAction(false); return; }
+  if (cmd === 'chart') { chart(); afterAction(false); return; }
   if (cmd === 'status' || cmd === 'report') { output(statusText(), 'system'); afterAction(false); return; }
   if (cmd === 'phasers') return fire('phaser'); if (cmd === 'photons' || cmd === 'torpedoes') return fire('photon');
   if (cmd === 'shields') return shields(); if (cmd === 'dock') return dock(); if (cmd === 'orbit') return orbit(); if (cmd === 'transport') return transport(); if (cmd === 'mine') return mine(); if (cmd === 'crystals') return useCrystals(args[0] === 'confirm'); if (cmd === 'planets') return planetsReport(); if (cmd === 'rest') return rest();
@@ -393,8 +418,10 @@ function command(input) {
   }
   if (cmd === 'warp') {
     const heading = dir(args[0]); if (heading) return move(...heading, true);
-    const coordinates = args.map(Number); if (coordinates.length === 2 && coordinates.every(Number.isInteger)) return warpTo(coordinates[0], coordinates[1]);
-    return commandFailure(m('Формат: warp <направление> или warp <quadrant X> <quadrant Y>.', 'Format: warp <direction> or warp <quadrant X> <quadrant Y>.'));
+    const values = args.map(Number);
+    if (values.length === 1 && Number.isInteger(values[0])) return setWarpFactor(values[0]);
+    if (values.length === 2 && values.every(Number.isInteger)) return warpTo(values[0], values[1]);
+    return commandFailure(m('Формат: warp <1…10>, warp <направление> или warp <quadrant X> <quadrant Y>.', 'Format: warp <1…10>, warp <direction>, or warp <quadrant X> <quadrant Y>.'));
   }
   if (cmd === 'quit') { output(m('Миссия приостановлена и сохранена.', 'Mission paused and saved.'), 'system'); save(); render(); return; }
   commandFailure(m(`НЕРАСПОЗНАННАЯ КОМАНДА: ${cmd}. Введите HELP.`, `UNKNOWN COMMAND: ${cmd}. Enter HELP.`));
@@ -408,6 +435,10 @@ function render() {
   if (ui.screen === 'setup') { app.innerHTML = setupTemplate(); bindSetup(); return; }
   app.innerHTML = gameTemplate(); bindGame();
 }
+async function preferLandscape() {
+  if (typeof window === 'undefined' || !window.matchMedia('(max-width: 800px) and (pointer: coarse)').matches) return;
+  try { await screen.orientation?.lock?.('landscape'); } catch { /* Mobile browsers may permit this only in installed/fullscreen mode. */ }
+}
 function languageSwitchTemplate() { return `<div class="view-select language-select" aria-label="${t('language')}"><button data-language="en" class="${ui.language === 'en' ? 'active' : ''}">EN</button><button data-language="ru" class="${ui.language === 'ru' ? 'active' : ''}">RU</button></div>`; }
 function introTemplate() {
   const hasSave = !!localStorage.getItem(STORE);
@@ -415,22 +446,41 @@ function introTemplate() {
   return `<main class="intro"><div class="stars"></div><div class="intro-art"><div class="planet"></div><div class="ship"><div class="ship-body"></div><i class="nacelle left"></i><i class="nacelle right"></i></div><div class="crew"><i></i><i></i><i></i><i></i><i></i></div></div><div class="intro-language">${languageSwitchTemplate()}</div><section class="intro-card"><div class="eyebrow">Interactive web adaptation · 2026</div><h1>SUPER STAR<br>TREK <span>Mission console</span></h1><p>${copy}</p><div class="start-row ${hasSave ? 'has-resume' : ''}"><button class="primary" id="new">${t('newMission')}</button>${hasSave ? `<button class="secondary" id="resume">${t('resume')}</button>` : ''}<button class="secondary" id="music">${ui.music ? t('soundOn') : t('soundOff')}</button></div></section></main>`;
 }
 function setupTemplate() { return `<main class="setup"><section class="setup-card"><div class="eyebrow">Starfleet mission control</div><h2>${t('missionPrep')}</h2><div class="form-grid"><label class="field">${t('captain')}<input id="captain" maxlength="18" value="${ui.language === 'ru' ? 'КАПИТАН' : 'CAPTAIN'}"></label><label class="field">${t('duration')}<select id="length"><option value="1">${t('short')}</option><option value="2" selected>${t('medium')}</option><option value="4">${t('long')}</option></select></label><label class="field">${t('difficulty')}<select id="skill"><option value="1">Novice</option><option value="2" selected>Fair</option><option value="3">Good</option><option value="4">Expert</option><option value="5">Emeritus</option></select></label><label class="field">${t('startInterface')}<select id="startView"><option value="console">1 — ${t('console')}</option><option value="deck">2 — ${t('deck')}</option></select></label></div><div class="setup-actions"><button class="primary" id="launch">${t('launch')}</button><button class="secondary" id="back">${t('back')}</button><span class="hint">${t('autoSave')}</span>${languageSwitchTemplate()}</div></section></main>`; }
-function gameTemplate() { return `<main class="game"><header class="topbar"><div class="brand">SUPER <b>STAR</b> TREK <span class="eyebrow">WEB MISSION</span></div><div class="top-actions">${languageSwitchTemplate()}<div class="view-select"><button data-view="console" class="${ui.view === 'console' ? 'active' : ''}">01 ${t('console')}</button><button data-view="deck" class="${ui.view === 'deck' ? 'active' : ''}">02 ${t('deck')}</button></div><button class="tool-btn small" id="help" aria-label="${t('help')}">?</button><button class="tool-btn small" id="sound">${ui.music ? '♫ ON' : '♫ OFF'}</button><button class="tool-btn small" id="save">${t('save')}</button></div></header>${ui.view === 'console' ? consoleTemplate() : deckTemplate()}${ui.helpOpen ? helpModal() : ''}${game.ended ? endModal() : ''}</main>`; }
-function sectorTemplate(className = '') { const sector = visibleSector(); return `<div class="sector-grid ${className}">${sector.map(symbol => `<div class="sector-cell ${symbol === 'E' ? 'ship' : symbol === 'K' || symbol === 'C' ? 'enemy' : symbol === 'B' ? 'base' : symbol === '*' ? 'star' : symbol === 'P' ? 'planet' : ''}">${symbol === '.' ? '' : symbol}</div>`).join('')}</div>`; }
-function galaxyTemplate() { return `<div class="galaxy-grid">${game.map.map(quadrant => `<button class="quad ${quadrant.known ? 'known' : ''} ${quadrant.x === game.pos.qx && quadrant.y === game.pos.qy ? 'current' : ''} ${quadrant.k ? 'enemy' : ''}" data-quad="${quadrant.x},${quadrant.y}" aria-label="Квадрант ${quadrant.x},${quadrant.y}">${quadrant.known ? `${quadrant.k}${quadrant.base ? 1 : 0}${quadrant.stars}` : '···'}</button>`).join('')}</div>`; }
-function actionsTemplate() { return `<div class="tactical-actions"><button class="tool-btn" data-action="phaser">${t('phasers')}</button><button class="tool-btn" data-action="photon">${t('photon')}</button><button class="tool-btn" data-action="shield">${t('shieldsAction')}</button><button class="tool-btn" data-action="dock">${t('dock')}</button><button class="tool-btn" data-action="orbit">${t('orbitAction')}</button><button class="tool-btn" data-action="transport">${t('transport')}</button><button class="tool-btn" data-action="mine">${t('mine')}</button><button class="tool-btn" data-action="scan">${t('scan')}</button><button class="tool-btn" data-action="rest">${t('rest')}</button></div>`; }
+function intelHintsLabel() { return m(`РАЗВЕДКА: ${ui.intelHints ? 'ВКЛ' : 'ВЫКЛ'}`, `INTEL: ${ui.intelHints ? 'ON' : 'OFF'}`); }
+function intelHintsHint() { return m('Подсветка скрытых квадрантов с врагами', 'Highlight unscanned quadrants with enemies'); }
+function gameTemplate() { return `<main class="game ${ui.view === 'deck' ? 'deck-game' : ''}"><header class="topbar"><div class="brand">SUPER <b>STAR</b> TREK <span class="eyebrow">WEB MISSION</span></div><div class="top-actions">${languageSwitchTemplate()}<div class="view-select"><button data-view="console" class="${ui.view === 'console' ? 'active' : ''}">01 ${t('console')}</button><button data-view="deck" class="${ui.view === 'deck' ? 'active' : ''}">02 ${t('deck')}</button></div>${ui.view === 'deck' ? `<button class="tool-btn small intel-toggle ${ui.intelHints ? 'active' : ''}" id="intel-hints" title="${intelHintsHint()}" aria-pressed="${ui.intelHints}">${intelHintsLabel()}</button><button class="tool-btn small" id="last-output" aria-label="${t('captainOutput')}" title="${t('captainOutput')}">▤</button>` : ''}<button class="tool-btn small" id="help" aria-label="${t('help')}">?</button><button class="tool-btn small" id="sound">${ui.music ? '♫ ON' : '♫ OFF'}</button><button class="tool-btn small" id="save">${t('save')}</button></div></header>${ui.view === 'console' ? consoleTemplate() : deckTemplate()}<footer class="game-footer"><a href="https://github.com/akaars/startrek-web" target="_blank" rel="noopener noreferrer">akaars/startrek-web</a></footer>${ui.view === 'deck' ? rotateDeviceNotice() : ''}${ui.helpOpen ? helpModal() : ''}${ui.outputOpen ? outputModal() : ''}${ui.crystalConfirmOpen ? crystalsModal() : ''}${game.ended ? endModal() : ''}</main>`; }
+function sectorTemplate(interactive = false) {
+  const sector = visibleSector();
+  return `<div class="sector-grid ${interactive ? 'tactical-sector-grid' : ''}">${sector.map((symbol, index) => {
+    const x = index % 10 + 1; const y = Math.floor(index / 10) + 1;
+    const type = symbol === 'E' ? 'ship' : symbol === 'K' || symbol === 'C' ? 'enemy' : symbol === 'B' ? 'base' : symbol === '*' ? 'star' : symbol === 'P' ? 'planet' : '';
+    const content = symbol === '.' ? '' : symbol;
+    return interactive
+      ? `<button class="sector-cell ${type}" data-sector="${x},${y}" aria-label="${t('sector')} ${x},${y}">${content}</button>`
+      : `<div class="sector-cell ${type}">${content}</div>`;
+  }).join('')}</div>`;
+}
+function galaxyTemplate() { return `<div class="galaxy-grid">${game.map.map(quadrant => `<button class="quad ${quadrant.known ? 'known' : ''} ${quadrant.x === game.pos.qx && quadrant.y === game.pos.qy ? 'current' : ''} ${(quadrant.known || ui.intelHints) && quadrant.k ? 'enemy' : ''}" data-quad="${quadrant.x},${quadrant.y}" aria-label="${m('Квадрант', 'Quadrant')} ${quadrant.x},${quadrant.y}">${quadrant.known ? intelCode(quadrant) : '····'}</button>`).join('')}</div>`; }
+function actionsTemplate() { return `<div class="tactical-actions"><button class="tool-btn" data-action="phaser">${t('phasers')}</button><button class="tool-btn" data-action="photon">${t('photon')}</button><button class="tool-btn" data-action="shield">${t('shieldsAction')}</button><button class="tool-btn" data-action="dock">${t('dock')}</button><button class="tool-btn" data-action="orbit">${t('orbitAction')}</button><button class="tool-btn" data-action="transport">${t('transport')}</button><button class="tool-btn" data-action="mine">${t('mine')}</button><button class="tool-btn" data-action="crystals">${t('crystals')}</button><button class="tool-btn" data-action="scan">${t('scan')}</button><button class="tool-btn" data-action="rest">${t('rest')}</button></div>`; }
 function movePadTemplate() { const symbols = { nw: '↖', n: '↑', ne: '↗', w: '←', e: '→', sw: '↙', s: '↓', se: '↘' }; return `<div class="move-pad">${['nw', 'n', 'ne', 'w', '', 'e', 'sw', 's', 'se'].map(direction => `<button data-move="${direction}" ${direction ? '' : 'disabled'}>${symbols[direction] || ''}</button>`).join('')}</div>`; }
 function readoutTemplate() { return `<div class="readout"><h3>Enterprise · Q${game.pos.qx},${game.pos.qy}</h3><div class="metric"><span>${t('date')}</span><strong>${game.stardate.toFixed(1)}</strong></div><div class="metric"><span>${t('time')}</span><strong>${game.time.toFixed(1)}</strong></div><div class="metric"><span>${t('condition')}</span><strong class="${game.condition === 'RED' ? 'danger' : ''}">${game.condition}</strong></div><div class="metric"><span>${t('energy')}</span><strong>${Math.round(game.energy)}</strong></div><div class="metric"><span>${t('shields')}</span><strong>${Math.round(game.shields)}</strong></div><div class="metric"><span>${t('torpedoes')}</span><strong>${game.torps}</strong></div><div class="metric"><span>${t('enemies')}</span><strong>${game.kills}/${game.initialEnemies} ${t('cleared')}</strong></div></div>`; }
-function consoleStatusText() { return `${t('status').toUpperCase()}\n-----------------\n${t('date')}       ${game.stardate.toFixed(1)}\n${t('time')}       ${game.time.toFixed(1)}\n${t('position')}   Q${game.pos.qx},${game.pos.qy}  S${game.pos.sx},${game.pos.sy}\n${t('condition')}  ${game.condition}\n${t('energy')}     ${Math.round(game.energy)}\n${t('shields')}    ${Math.round(game.shields)}  ${game.shieldsUp ? 'UP' : 'DOWN'}\n${t('torpedoes')}  ${game.torps}\n${t('orbit')}      ${game.inOrbit ? t('standard') : t('none')}\n${t('landing')}    ${game.landed ? t('onPlanet') : t('onBoard')}\n${t('crystals')}   ${game.crystals ? t('onBoard') : game.pendingCrystals ? t('withParty') : t('none')}\n${t('fleet')}      ${game.kills}/${game.initialEnemies} ${t('cleared')}`; }
-function consoleTemplate() { return `<section class="console-deck"><div class="console-panel console-sector"><div class="console-title">${t('localSector').toUpperCase()} <span>Q${game.pos.qx},${game.pos.qy}</span></div><pre class="console-ascii">${escapeHtml(renderSectorText())}</pre><section class="console-command"><div class="console-title">${t('commandConsole').toUpperCase()} <span>${t('lastResponse').toUpperCase()}</span></div><div class="terminal-log ${game.output?.kind || ''}" id="log">${escapeHtml(game.output?.text || '')}</div><form class="commandline" id="command"><span>COMMAND&gt;</span><input autocomplete="off" aria-label="${t('commandConsole')}" autofocus placeholder="help · move n 2 · move 1 1 · warp 5 2" /></form></section></div><div class="console-stack"><div class="console-panel"><div class="console-title">${t('galaxy').toUpperCase()} <span>${t('knownSpace').toUpperCase()}</span></div><pre class="console-ascii galaxy-ascii">${escapeHtml(galaxyText())}</pre><div class="console-keyline">${t('cellLegend').toUpperCase()}</div></div><div class="console-panel"><pre class="console-ascii status-ascii">${escapeHtml(consoleStatusText())}</pre></div></div></section>`; }
-function deckTemplate() { return `<section class="deck"><div class="deck-panel"><div class="deck-title"><h2>${t('tacticalGrid')}</h2><span>Quadrant ${game.pos.qx},${game.pos.qy}</span></div>${sectorTemplate()}${actionsTemplate()}</div><div class="control-deck"><div class="deck-panel"><div class="deck-title"><h2>${t('galaxy')}</h2><span>${t('clickWarp')}</span></div>${galaxyTemplate()}<p class="prose">${t('galaxyHint')}</p></div>${readoutTemplate()}<div class="deck-panel"><div class="deck-title"><h2>${t('helm')}</h2><span>${t('impulse')}</span></div>${movePadTemplate()}</div><div class="deck-panel"><div class="deck-title"><h2>${t('captainOutput')}</h2><span>${t('lastResponse')}</span></div><div class="log-mini ${game.output?.kind || ''}" id="log">${escapeHtml(game.output?.text || '')}</div></div></div></section>`; }
+function consoleStatusText() { return `${t('date')}       ${game.stardate.toFixed(1)}\n${t('time')}       ${game.time.toFixed(1)}\n${t('position')}   Q${game.pos.qx},${game.pos.qy}  S${game.pos.sx},${game.pos.sy}\n${t('condition')}  ${game.condition}\n${t('energy')}     ${Math.round(game.energy)}\n${t('shields')}    ${Math.round(game.shields)}  ${game.shieldsUp ? 'UP' : 'DOWN'}\nWARP       ${game.warp}\n${t('torpedoes')}  ${game.torps}\n${t('orbit')}      ${game.inOrbit ? t('standard') : t('none')}\n${t('landing')}    ${game.landed ? t('onPlanet') : t('onBoard')}\n${t('crystals')}   ${game.crystals ? t('onBoard') : game.pendingCrystals ? t('withParty') : t('none')}\n${t('fleet')}      ${game.kills}/${game.initialEnemies} ${t('cleared')}`; }
+function consoleTemplate() { return `<section class="console-deck"><section class="console-panel"><div class="console-title">${t('localSector').toUpperCase()} <span>Q${game.pos.qx},${game.pos.qy}</span></div><pre class="console-ascii">${escapeHtml(renderSectorText())}</pre></section><section class="console-panel"><div class="console-title">${t('galaxy').toUpperCase()} <span>${t('knownSpace').toUpperCase()}</span></div><pre class="console-ascii galaxy-ascii">${escapeHtml(galaxyText())}</pre><div class="console-keyline">${t('cellLegend').toUpperCase()}</div></section><section class="console-panel console-command"><div class="console-title">${t('commandConsole').toUpperCase()} <span>${t('lastResponse').toUpperCase()}</span></div><div class="terminal-log ${game.output?.kind || ''}" id="log">${escapeHtml(game.output?.text || '')}</div><form class="commandline" id="command"><span>COMMAND&gt;</span><input autocomplete="off" aria-label="${t('commandConsole')}" autofocus placeholder="help · move n 2 · move 1 1 · warp 5 2" /></form></section><section class="console-panel"><div class="console-title">${t('status').toUpperCase()} <span>ENTERPRISE</span></div><pre class="console-ascii status-ascii">${escapeHtml(consoleStatusText())}</pre></section></section>`; }
+function deckConditionText() { return m({ GREEN: 'ЗЕЛЁНЫЙ', YELLOW: 'ЖЁЛТЫЙ', RED: 'КРАСНЫЙ' }[game.condition] || game.condition, game.condition); }
+function deckShieldText() { return game.shieldsUp ? m('ПОДНЯТЫ', 'UP') : m('ОПУЩЕНЫ', 'DOWN'); }
+function deckTickerText() { return `ENTERPRISE Q${game.pos.qx},${game.pos.qy} / S${game.pos.sx},${game.pos.sy}  ·  ${t('date')} ${game.stardate.toFixed(1)}  ·  ${t('time')} ${game.time.toFixed(1)}  ·  ${m('СТАТУС', 'CONDITION')}: ${deckConditionText()}  ·  ${t('energy')} ${Math.round(game.energy)}  ·  ${t('shields')} ${Math.round(game.shields)} ${deckShieldText()}  ·  WARP ${game.warp}  ·  ${t('torpedoes')} ${game.torps}  ·  ${t('fleet')} ${game.kills}/${game.initialEnemies} ${t('cleared')}`; }
+function warpSelectTemplate() { return `<details class="warp-dropdown"><summary aria-label="${m('Варп-фактор', 'Warp factor')}">WARP ${game.warp}</summary><div class="warp-options">${Array.from({ length: 10 }, (_, index) => index + 1).map(factor => `<button type="button" class="warp-option ${game.warp === factor ? 'active' : ''}" data-warp-factor="${factor}" aria-pressed="${game.warp === factor}">${factor}</button>`).join('')}</div></details>`; }
+function deckTemplate() { const ticker = escapeHtml(deckTickerText()); return `<section class="deck-wrap"><div class="deck-status-ticker" role="status"><div class="ticker-track"><span>${ticker}</span></div></div><section class="deck"><div class="deck-panel"><div class="deck-title"><h2>${t('tacticalGrid')}</h2><span>${m('клик по сектору — импульс', 'click a sector to manoeuvre')}</span></div>${sectorTemplate(true)}${actionsTemplate()}</div><div class="control-deck"><div class="deck-panel"><div class="deck-title"><h2>${t('galaxy')}</h2><div class="deck-tools"><span>${t('clickWarp')}</span>${warpSelectTemplate()}</div></div>${galaxyTemplate()}<p class="prose">${t('galaxyHint')}</p></div></div></section></section>`; }
+function rotateDeviceNotice() { return `<div class="rotate-device" role="status"><span>↻</span><p>${m('Поверните устройство горизонтально для Tactical Deck', 'Rotate your device to landscape for Tactical Deck')}</p></div>`; }
 function helpModal() { const help = helpItems(); return `<div class="modal" id="help-modal"><section class="modal-card help-card" role="dialog" aria-modal="true" aria-label="${t('missionHelp')}"><button class="modal-close" id="close-help" aria-label="${t('closeHelp')}">×</button><div class="eyebrow">${t('commandReference')}</div><h2>${t('missionHelp')}</h2><div class="help-grid">${Object.entries(help).filter(([key]) => key !== 'overview').map(([key, item]) => `<button class="help-link" data-help-topic="${key}"><b>${key}</b><span>${item[1].split('. ')[0]}.</span></button>`).join('')}</div><div class="help-detail" id="help-detail">${escapeHtml(helpText())}</div></section></div>`; }
+function outputModal() { return `<div class="modal" id="output-modal"><section class="modal-card output-card" role="dialog" aria-modal="true" aria-label="${t('captainOutput')}"><button class="modal-close" id="close-output" aria-label="${t('close')}">×</button><h2>${t('captainOutput')}</h2><pre class="output-log ${game.output?.kind || ''}">${escapeHtml(game.output?.text || '')}</pre></section></div>`; }
+function crystalsModal() { return `<div class="modal" id="crystals-modal"><section class="modal-card" role="dialog" aria-modal="true" aria-label="${m('Активация кристаллов', 'Crystal activation')}"><div class="eyebrow">${t('crystals')}</div><h2>${m('Активировать дилитиевые кристаллы?', 'Activate dilithium crystals?')}</h2><p>${m('Операция возможна только при энергии ниже 1000 и может повредить Enterprise.', 'This is available only below 1000 energy and may damage Enterprise.')}</p><div class="modal-actions"><button class="primary" id="confirm-crystals">crystals confirm</button><button class="secondary" id="cancel-crystals">${m('Отмена', 'Cancel')}</button></div></section></div>`; }
 function endModal() { return `<div class="modal"><section class="modal-card"><div class="eyebrow">${t('missionCompleted')}</div><h2>${game.kills >= game.initialEnemies ? t('federationVictory') : t('missionEnded')}</h2><p>${escapeHtml(game.output?.text || '').replaceAll('\n', ' ')}</p><div class="modal-actions"><button class="secondary" id="keep">${t('close')}</button><button class="primary" id="again">${t('newGame')}</button></div></section></div>`; }
 function escapeHtml(value) { return String(value).replace(/[&<>]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[char])); }
 
 function bindLanguageButtons() { document.querySelectorAll('[data-language]').forEach(button => button.onclick = () => setLanguage(button.dataset.language)); }
-function bindIntro() { $('#new').onclick = () => { ui.screen = 'setup'; render(); }; $('#resume')?.addEventListener('click', resume); $('#music').onclick = toggleMusic; bindLanguageButtons(); }
-function bindSetup() { $('#back').onclick = () => { ui.screen = 'intro'; render(); }; $('#launch').onclick = () => { ui.view = $('#startView').value; newGame({ length: +$('#length').value, skill: +$('#skill').value, name: $('#captain').value.trim() || (ui.language === 'ru' ? 'КАПИТАН' : 'CAPTAIN') }); ui.screen = 'game'; render(); }; bindLanguageButtons(); }
+function bindIntro() { $('#new').onclick = () => { ui.screen = 'setup'; render(); }; $('#resume')?.addEventListener('click', () => { if (resume() && ui.view === 'deck') void preferLandscape(); }); $('#music').onclick = toggleMusic; bindLanguageButtons(); }
+function bindSetup() { $('#back').onclick = () => { ui.screen = 'intro'; render(); }; $('#launch').onclick = () => { ui.view = $('#startView').value; newGame({ length: +$('#length').value, skill: +$('#skill').value, name: $('#captain').value.trim() || (ui.language === 'ru' ? 'КАПИТАН' : 'CAPTAIN') }); ui.screen = 'game'; render(); if (ui.view === 'deck') void preferLandscape(); }; bindLanguageButtons(); }
 function bindGame() {
   const commandInput = $('#command input');
   $('#command')?.addEventListener('submit', event => {
@@ -450,16 +500,20 @@ function bindGame() {
       else { ui.historyIndex = ui.commandHistory.length; commandInput.value = ui.commandDraft; }
     }
   });
-  if (!ui.helpOpen) commandInput?.focus();
-  document.querySelectorAll('[data-action]').forEach(button => button.onclick = () => { const action = button.dataset.action; if (action === 'scan') { scan(); afterAction(false); } else if (action === 'phaser') fire('phaser'); else if (action === 'photon') fire('photon'); else if (action === 'shield') shields(); else if (action === 'dock') dock(); else if (action === 'orbit') orbit(); else if (action === 'transport') transport(); else if (action === 'mine') mine(); else if (action === 'rest') rest(); });
-  document.querySelectorAll('[data-move]').forEach(button => button.onclick = () => move(...dir(button.dataset.move)));
-  document.querySelectorAll('[data-view]').forEach(button => button.onclick = () => { ui.view = button.dataset.view; save(); render(); });
+  if (!ui.helpOpen && !ui.outputOpen) commandInput?.focus();
+  document.querySelectorAll('[data-action]').forEach(button => button.onclick = () => { if (game.ended) return; const action = button.dataset.action; if (action === 'scan') { scan(); afterAction(false); } else if (action === 'phaser') fire('phaser'); else if (action === 'photon') fire('photon'); else if (action === 'shield') shields(); else if (action === 'dock') dock(); else if (action === 'orbit') orbit(); else if (action === 'transport') transport(); else if (action === 'mine') mine(); else if (action === 'crystals') { ui.crystalConfirmOpen = true; render(); } else if (action === 'rest') rest(); });
+  document.querySelectorAll('[data-sector]').forEach(button => button.onclick = () => { const [sx, sy] = button.dataset.sector.split(',').map(Number); moveTo(game.pos.qx, game.pos.qy, sx, sy); });
+  document.querySelectorAll('[data-view]').forEach(button => button.onclick = () => { ui.view = button.dataset.view; save(); render(); if (ui.view === 'deck') void preferLandscape(); });
   bindLanguageButtons();
   document.querySelectorAll('[data-quad]').forEach(button => button.onclick = () => { const [x, y] = button.dataset.quad.split(',').map(Number); const dx = x - game.pos.qx; const dy = y - game.pos.qy; if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1 && (dx || dy)) move(dx, dy, true); else commandFailure(m('Варп требует соседней цели.', 'Warp requires an adjacent target.')); });
+  document.querySelectorAll('[data-warp-factor]').forEach(button => button.onclick = () => { const factor = Number(button.dataset.warpFactor); if (factor === game.warp) { button.closest('details')?.removeAttribute('open'); return; } setWarpFactor(factor); });
   $('#save').onclick = () => { output(m('Сохранение подтверждено.', 'Save confirmed.'), 'system'); save(); render(); }; $('#sound').onclick = toggleMusic;
+  $('#intel-hints')?.addEventListener('click', () => { ui.intelHints = !ui.intelHints; save(); render(); });
   $('#help').onclick = () => { ui.helpOpen = true; render(); }; $('#close-help')?.addEventListener('click', () => { ui.helpOpen = false; render(); });
+  $('#last-output')?.addEventListener('click', () => { ui.outputOpen = true; render(); }); $('#close-output')?.addEventListener('click', () => { ui.outputOpen = false; render(); });
+  $('#confirm-crystals')?.addEventListener('click', () => { ui.crystalConfirmOpen = false; useCrystals(true); }); $('#cancel-crystals')?.addEventListener('click', () => { ui.crystalConfirmOpen = false; render(); });
   document.querySelectorAll('[data-help-topic]').forEach(button => button.onclick = () => { $('#help-detail').textContent = helpText(button.dataset.helpTopic); });
-  $('#again')?.addEventListener('click', () => { clearSave(); ui.screen = 'setup'; ui.helpOpen = false; render(); }); $('#keep')?.addEventListener('click', () => { $('.modal')?.remove(); });
+  $('#again')?.addEventListener('click', () => { clearSave(); ui.screen = 'setup'; ui.helpOpen = false; ui.outputOpen = false; ui.crystalConfirmOpen = false; render(); }); $('#keep')?.addEventListener('click', () => { clearSave(); ui.screen = 'intro'; ui.helpOpen = false; ui.outputOpen = false; ui.crystalConfirmOpen = false; render(); });
 }
 
 let audioCtx, musicTimer;
@@ -468,7 +522,7 @@ function toggleMusic() { ui.music = !ui.music; if (ui.music) { try { audioCtx ??
 
 if (typeof document !== 'undefined') {
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && ui.helpOpen) { ui.helpOpen = false; render(); }
+    if (event.key === 'Escape' && (ui.helpOpen || ui.outputOpen || ui.crystalConfirmOpen)) { ui.helpOpen = false; ui.outputOpen = false; ui.crystalConfirmOpen = false; render(); }
   });
   render();
 }
