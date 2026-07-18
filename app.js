@@ -11,6 +11,7 @@ const UI = {
 function t(key) { return UI[ui.language]?.[key] || UI.en[key] || key; }
 let game = null;
 let ui = { screen: 'intro', view: 'console', language: (typeof localStorage !== 'undefined' && localStorage.getItem('sst-web-language')) || 'en', music: false, helpOpen: false, commandHistory: [], historyIndex: 0, commandDraft: '' };
+const m = (ru, en) => ui.language === 'ru' ? ru : en;
 
 const HELP_RU = {
   overview: ['СПРАВКА ПО МИССИИ', 'Цель — уничтожить весь вражеский флот до окончания выделенного времени. Галактика состоит из 8×8 квадрантов; каждый квадрант — из 10×10 секторов. Код на карте: враги / база / звёзды. Состояние автоматически сохраняется в браузере.'],
@@ -118,7 +119,7 @@ function loadQuadrant(silent = false) {
   quadrant.known = true;
   game.sector = visibleSector();
   updateCondition();
-  if (!silent) output(`Вход в квадрант ${game.pos.qx},${game.pos.qy}.`, 'system');
+  if (!silent) output(m(`Вход в квадрант ${game.pos.qx},${game.pos.qy}.`, `Entering quadrant ${game.pos.qx},${game.pos.qy}.`), 'system');
 }
 
 function newGame({ length = 2, skill = 2, name = 'КАПИТАН' }) {
@@ -171,7 +172,7 @@ function setLanguage(language) {
 function spendTime(amount) {
   game.stardate += amount; game.time -= amount;
   if (game.time > 0) return false;
-  game.time = 0; end('Время Федерации исчерпано. Вторжение победило.'); return true;
+  game.time = 0; end(m('Время Федерации исчерпано. Вторжение победило.', 'The Federation has run out of time. The invasion prevails.')); return true;
 }
 function renderSectorText() {
   const sector = visibleSector();
@@ -210,50 +211,50 @@ function route(start, destination) {
 }
 
 function move(dx, dy, warp = false, amount = 1) {
-  if (game.landed) return commandFailure('Посадочная группа на планете. Сначала используйте transport для возвращения на Enterprise.');
-  if (game.inOrbit) return commandFailure('Enterprise находится в стандартной орбите. Введите orbit, чтобы покинуть её.');
-  if (!dx && !dy) return commandFailure('Курс нулевой. Перемещение отменено.');
+  if (game.landed) return commandFailure(m('Посадочная группа на планете. Сначала используйте transport для возвращения на Enterprise.', 'The landing party is on the planet. Use transport to return it to Enterprise first.'));
+  if (game.inOrbit) return commandFailure(m('Enterprise находится в стандартной орбите. Введите orbit, чтобы покинуть её.', 'Enterprise is in standard orbit. Enter orbit to leave it.'));
+  if (!dx && !dy) return commandFailure(m('Курс нулевой. Перемещение отменено.', 'Course is zero. Movement cancelled.'));
   if (warp) return warpTo(game.pos.qx + dx, game.pos.qy + dy);
   amount = clamp(Math.floor(Number(amount) || 1), 1, 79);
   const start = globalPoint(game.pos); const target = { x: start.x + dx * amount, y: start.y + dy * amount };
-  if (target.x < 1 || target.x > 80 || target.y < 1 || target.y > 80) return commandFailure('Отрицательный энергетический барьер. Манёвр прекращён.');
+  if (target.x < 1 || target.x > 80 || target.y < 1 || target.y > 80) return commandFailure(m('Отрицательный энергетический барьер. Манёвр прекращён.', 'Negative energy barrier. Manoeuvre aborted.'));
   const targetPosition = positionFromGlobal(target.x, target.y);
   return moveTo(targetPosition.qx, targetPosition.qy, targetPosition.sx, targetPosition.sy);
 }
 function moveTo(qx, qy, sx, sy) {
   if (game.ended) return;
-  if (game.landed) return commandFailure('Посадочная группа на планете. Сначала используйте transport для возвращения на Enterprise.');
-  if (game.inOrbit) return commandFailure('Enterprise находится в стандартной орбите. Введите orbit, чтобы покинуть её.');
-  if (![qx, qy].every(value => Number.isInteger(value) && value >= 1 && value <= 8) || ![sx, sy].every(value => Number.isInteger(value) && value >= 1 && value <= 10)) return commandFailure('Координаты вне границ: квадрант — 1…8, сектор — 1…10.');
+  if (game.landed) return commandFailure(m('Посадочная группа на планете. Сначала используйте transport для возвращения на Enterprise.', 'The landing party is on the planet. Use transport to return it to Enterprise first.'));
+  if (game.inOrbit) return commandFailure(m('Enterprise находится в стандартной орбите. Введите orbit, чтобы покинуть её.', 'Enterprise is in standard orbit. Enter orbit to leave it.'));
+  if (![qx, qy].every(value => Number.isInteger(value) && value >= 1 && value <= 8) || ![sx, sy].every(value => Number.isInteger(value) && value >= 1 && value <= 10)) return commandFailure(m('Координаты вне границ: квадрант — 1…8, сектор — 1…10.', 'Coordinates are out of bounds: quadrant 1…8, sector 1…10.'));
   const start = globalPoint(game.pos); const target = globalPoint({ qx, qy, sx, sy }); const distance = Math.hypot(target.x - start.x, target.y - start.y);
-  if (!distance) return commandFailure('Enterprise уже находится в указанном секторе.');
+  if (!distance) return commandFailure(m('Enterprise уже находится в указанном секторе.', 'Enterprise is already in the requested sector.'));
   const fullCost = 20 + Math.round(distance * 100);
-  if (game.energy < fullCost) return commandFailure(`Недостаточно энергии для маршрута: требуется ${fullCost}.`);
+  if (game.energy < fullCost) return commandFailure(m(`Недостаточно энергии для маршрута: требуется ${fullCost}.`, `Insufficient energy for the route: ${fullCost} required.`));
   const points = route(start, target); let last = { ...game.pos };
   for (const point of points.slice(1)) {
     const position = positionFromGlobal(point.x, point.y); const quadrant = cell(position.qx, position.qy); const symbol = ensureLayout(quadrant)[(position.sy - 1) * 10 + position.sx - 1];
     if (symbol !== '.') {
       const lastPoint = globalPoint(last); const travelled = Math.hypot(lastPoint.x - start.x, lastPoint.y - start.y); const cost = travelled ? 20 + Math.round(travelled * 100) : 0;
       game.energy -= cost; game.pos = last; loadQuadrant(true); if (travelled) spendTime(0.05 + travelled / 0.95);
-      output(`ИМПУЛЬС: курс прерван перед объектом «${symbol}» в Q${position.qx},${position.qy} / S${position.sx},${position.sy}. Текущая позиция: Q${last.qx},${last.qy} / S${last.sx},${last.sy}; энергия −${cost}.`, 'alert'); return afterAction();
+      output(m(`ИМПУЛЬС: курс прерван перед объектом «${symbol}» в Q${position.qx},${position.qy} / S${position.sx},${position.sy}. Текущая позиция: Q${last.qx},${last.qy} / S${last.sx},${last.sy}; энергия −${cost}.`, `IMPULSE: course interrupted before “${symbol}” at Q${position.qx},${position.qy} / S${position.sx},${position.sy}. Current position: Q${last.qx},${last.qy} / S${last.sx},${last.sy}; energy −${cost}.`), 'alert'); return afterAction();
     }
     last = position;
   }
   game.energy -= fullCost; if (spendTime(0.05 + distance / 0.95)) return afterAction(false);
   game.pos = { qx, qy, sx, sy }; loadQuadrant(true);
-  output(`ИМПУЛЬС: маршрут завершён. Позиция Q${qx},${qy} / S${sx},${sy}; энергия −${fullCost}.`, 'system'); return afterAction();
+  output(m(`ИМПУЛЬС: маршрут завершён. Позиция Q${qx},${qy} / S${sx},${sy}; энергия −${fullCost}.`, `IMPULSE: route complete. Position Q${qx},${qy} / S${sx},${sy}; energy −${fullCost}.`), 'system'); return afterAction();
 }
 function warpTo(qx, qy) {
   if (game.ended) return;
-  if (game.landed) return commandFailure('Посадочная группа на планете. Сначала используйте transport для возвращения на Enterprise.');
-  if (game.inOrbit) return commandFailure('Enterprise находится в стандартной орбите. Введите orbit, чтобы покинуть её.');
-  if (![qx, qy].every(value => Number.isInteger(value) && value >= 1 && value <= 8)) return commandFailure('Координаты квадранта должны быть в диапазоне 1…8.');
-  const distance = Math.hypot(qx - game.pos.qx, qy - game.pos.qy); if (!distance) return commandFailure('Enterprise уже находится в указанном квадранте.');
-  const cost = Math.round((190 + rand(160)) * game.warp * distance); if (game.energy < cost) return commandFailure(`Недостаточно энергии для варп-перехода: требуется ${cost}.`);
-  const target = cell(qx, qy); const destination = findNearestEmpty(ensureLayout(target)); if (destination === undefined) return commandFailure('В указанном квадранте нет свободного сектора для выхода из варпа.');
+  if (game.landed) return commandFailure(m('Посадочная группа на планете. Сначала используйте transport для возвращения на Enterprise.', 'The landing party is on the planet. Use transport to return it to Enterprise first.'));
+  if (game.inOrbit) return commandFailure(m('Enterprise находится в стандартной орбите. Введите orbit, чтобы покинуть её.', 'Enterprise is in standard orbit. Enter orbit to leave it.'));
+  if (![qx, qy].every(value => Number.isInteger(value) && value >= 1 && value <= 8)) return commandFailure(m('Координаты квадранта должны быть в диапазоне 1…8.', 'Quadrant coordinates must be in the range 1…8.'));
+  const distance = Math.hypot(qx - game.pos.qx, qy - game.pos.qy); if (!distance) return commandFailure(m('Enterprise уже находится в указанном квадранте.', 'Enterprise is already in the requested quadrant.'));
+  const cost = Math.round((190 + rand(160)) * game.warp * distance); if (game.energy < cost) return commandFailure(m(`Недостаточно энергии для варп-перехода: требуется ${cost}.`, `Insufficient energy for warp: ${cost} required.`));
+  const target = cell(qx, qy); const destination = findNearestEmpty(ensureLayout(target)); if (destination === undefined) return commandFailure(m('В указанном квадранте нет свободного сектора для выхода из варпа.', 'There is no free sector for warp arrival in that quadrant.'));
   game.energy -= cost; if (spendTime(0.14 + 0.3 * distance)) return afterAction(false);
   game.pos = { qx, qy, sx: destination % 10 + 1, sy: Math.floor(destination / 10) + 1 }; loadQuadrant(true);
-  output(`ВАРП ${game.warp.toFixed(1)}: переход в квадрант ${qx},${qy} завершён. Прибытие: S${game.pos.sx},${game.pos.sy}; энергия −${cost}.`, 'system'); return afterAction();
+  output(m(`ВАРП ${game.warp.toFixed(1)}: переход в квадрант ${qx},${qy} завершён. Прибытие: S${game.pos.sx},${game.pos.sy}; энергия −${cost}.`, `WARP ${game.warp.toFixed(1)}: transfer to quadrant ${qx},${qy} complete. Arrival: S${game.pos.sx},${game.pos.sy}; energy −${cost}.`), 'system'); return afterAction();
 }
 
 function removeEnemies(quadrant, count) {
@@ -270,35 +271,36 @@ function attack() {
   for (let i = 0; i < quadrant.k; i += 1) hit += 90 + rand(210);
   const absorbed = game.shieldsUp ? Math.min(game.shields, hit) : 0;
   game.shields -= absorbed; game.energy -= hit - absorbed;
-  if (game.energy <= 0) end('Enterprise уничтожен в бою.');
-  return `\nОтветный огонь: щиты −${Math.round(absorbed)}, энергия −${Math.round(hit - absorbed)}.`;
+  if (game.energy <= 0) end(m('Enterprise уничтожен в бою.', 'Enterprise was destroyed in battle.'));
+  return m(`\nОтветный огонь: щиты −${Math.round(absorbed)}, энергия −${Math.round(hit - absorbed)}.`, `\nReturn fire: shields −${Math.round(absorbed)}, energy −${Math.round(hit - absorbed)}.`);
 }
 function fire(kind) {
   const quadrant = cell();
-  if (!quadrant.k) return commandFailure('На датчиках нет вражеских целей.');
+  if (!quadrant.k) return commandFailure(m('На датчиках нет вражеских целей.', 'No enemy targets are on sensors.'));
   let damage;
   if (kind === 'phaser') {
     const cost = Math.min(600, Math.max(250, game.energy * 0.12));
-    if (game.energy < cost) return commandFailure('Недостаточно энергии для фазеров.');
+    if (game.energy < cost) return commandFailure(m('Недостаточно энергии для фазеров.', 'Insufficient energy for phasers.'));
     game.energy -= cost; damage = cost * (0.6 + rand(0.8));
   } else {
-    if (!game.torps) return commandFailure('Фотонные торпеды исчерпаны.');
+    if (!game.torps) return commandFailure(m('Фотонные торпеды исчерпаны.', 'Photon torpedoes are depleted.'));
     game.torps -= 1; damage = 600 + rand(750);
   }
   let destroyed = Math.min(quadrant.k, Math.floor(damage / (380 + game.skill * 60)));
   if (!destroyed && rand() > 0.4) destroyed = 1;
   destroyed = removeEnemies(quadrant, destroyed); quadrant.k -= destroyed; game.kills += destroyed;
-  const response = quadrant.k ? attack() : '\nКвадрант очищен от противника.';
-  if (!quadrant.k && game.kills >= game.initialEnemies) end('Флот противника разгромлен. Федерация спасена.');
+  const response = quadrant.k ? attack() : m('\nКвадрант очищен от противника.', '\nQuadrant cleared of hostiles.');
+  if (!quadrant.k && game.kills >= game.initialEnemies) end(m('Флот противника разгромлен. Федерация спасена.', 'The enemy fleet has been defeated. The Federation is saved.'));
   game.sector = visibleSector();
-  output(`${kind === 'phaser' ? 'ФАЗЕРЫ' : 'ФОТОННЫЕ ТОРПЕДЫ'}: ${Math.round(damage)} ед. урона. ${destroyed ? `Уничтожено кораблей: ${destroyed}.` : 'Прямого попадания нет.'}${response}`, destroyed ? 'system' : 'alert');
+  if (game.ended) return afterAction(false);
+  output(m(`${kind === 'phaser' ? 'ФАЗЕРЫ' : 'ФОТОННЫЕ ТОРПЕДЫ'}: ${Math.round(damage)} ед. урона. ${destroyed ? `Уничтожено кораблей: ${destroyed}.` : 'Прямого попадания нет.'}${response}`, `${kind === 'phaser' ? 'PHASERS' : 'PHOTON TORPEDOES'}: ${Math.round(damage)} damage. ${destroyed ? `Ships destroyed: ${destroyed}.` : 'No direct hit.'}${response}`), destroyed ? 'system' : 'alert');
   afterAction(false);
 }
-function shields() { game.shieldsUp = !game.shieldsUp; output(`Щиты ${game.shieldsUp ? 'подняты' : 'опущены'}.`, 'system'); afterAction(false); }
+function shields() { game.shieldsUp = !game.shieldsUp; output(m(`Щиты ${game.shieldsUp ? 'подняты' : 'опущены'}.`, `Shields ${game.shieldsUp ? 'raised' : 'lowered'}.`), 'system'); afterAction(false); }
 function dock() {
   const sector = visibleSector(); const base = sector.findIndex(symbol => symbol === 'B'); const ship = localIndex();
-  if (base < 0 || Math.hypot(base % 10 - ship % 10, Math.floor(base / 10) - Math.floor(ship / 10)) > 1.5) return commandFailure('Starbase не находится в соседнем секторе.');
-  game.energy = 5000; game.shields = 2500; game.torps = 10; output('Стыковка завершена. Ремонт и пополнение запасов произведены.', 'system'); afterAction(false);
+  if (base < 0 || Math.hypot(base % 10 - ship % 10, Math.floor(base / 10) - Math.floor(ship / 10)) > 1.5) return commandFailure(m('Starbase не находится в соседнем секторе.', 'A starbase is not in an adjacent sector.'));
+  game.energy = 5000; game.shields = 2500; game.torps = 10; output(m('Стыковка завершена. Ремонт и пополнение запасов произведены.', 'Docking complete. Repairs and resupply are complete.'), 'system'); afterAction(false);
 }
 function currentPlanet() {
   const quadrant = cell(); ensurePlanetData(quadrant);
@@ -307,57 +309,57 @@ function currentPlanet() {
   return { quadrant, x: location % 10 + 1, y: Math.floor(location / 10) + 1, key: `${quadrant.x},${quadrant.y}` };
 }
 function orbit() {
-  if (game.landed) return commandFailure('Посадочная группа уже находится на планете. Сначала используйте transport.');
-  if (game.inOrbit) { game.inOrbit = false; output('Enterprise покинул стандартную орбиту.', 'system'); return afterAction(false); }
+  if (game.landed) return commandFailure(m('Посадочная группа уже находится на планете. Сначала используйте transport.', 'The landing party is already on the planet. Use transport first.'));
+  if (game.inOrbit) { game.inOrbit = false; output(m('Enterprise покинул стандартную орбиту.', 'Enterprise has left standard orbit.'), 'system'); return afterAction(false); }
   const planet = currentPlanet();
-  if (!planet) return commandFailure('В этом квадранте нет планеты.');
-  if (cell().k) return commandFailure('Вражеские корабли не позволяют безопасно войти в орбиту.');
-  if (Math.hypot(game.pos.sx - planet.x, game.pos.sy - planet.y) > 1.5) return commandFailure(`Для входа в орбиту подойдите к планете: P находится в S${planet.x},${planet.y}.`);
+  if (!planet) return commandFailure(m('В этом квадранте нет планеты.', 'There is no planet in this quadrant.'));
+  if (cell().k) return commandFailure(m('Вражеские корабли не позволяют безопасно войти в орбиту.', 'Enemy ships prevent a safe orbital approach.'));
+  if (Math.hypot(game.pos.sx - planet.x, game.pos.sy - planet.y) > 1.5) return commandFailure(m(`Для входа в орбиту подойдите к планете: P находится в S${planet.x},${planet.y}.`, `Move next to the planet to enter orbit: P is at S${planet.x},${planet.y}.`));
   planet.quadrant.planetKnown = true; game.inOrbit = true;
-  output(`Стандартная орбита установлена вокруг планеты класса ${['M', 'N', 'O'][planet.quadrant.planetClass - 1]}.`, 'system'); return afterAction(false);
+  output(m(`Стандартная орбита установлена вокруг планеты класса ${['M', 'N', 'O'][planet.quadrant.planetClass - 1]}.`, `Standard orbit established around a class ${['M', 'N', 'O'][planet.quadrant.planetClass - 1]} planet.`), 'system'); return afterAction(false);
 }
 function transport() {
-  if (!game.inOrbit) return commandFailure('Для транспортировки сначала войдите в стандартную орбиту: orbit.');
-  if (game.shieldsUp) return commandFailure('Невозможно транспортировать через поднятые щиты. Сначала используйте shields.');
-  const planet = currentPlanet(); if (!planet) return commandFailure('Планета не обнаружена.');
-  if (!game.landed) { game.landed = true; output('Транспортировка завершена. Посадочная группа на поверхности планеты.', 'system'); }
-  else { game.landed = false; if (game.pendingCrystals) { game.pendingCrystals = false; game.crystals = true; output('Транспортировка завершена. Посадочная группа и добытые дилитиевые кристаллы вернулись на Enterprise.', 'system'); } else output('Транспортировка завершена. Посадочная группа вернулась на Enterprise.', 'system'); }
+  if (!game.inOrbit) return commandFailure(m('Для транспортировки сначала войдите в стандартную орбиту: orbit.', 'Enter standard orbit with orbit before transporting.'));
+  if (game.shieldsUp) return commandFailure(m('Невозможно транспортировать через поднятые щиты. Сначала используйте shields.', 'Cannot transport through raised shields. Use shields first.'));
+  const planet = currentPlanet(); if (!planet) return commandFailure(m('Планета не обнаружена.', 'Planet not detected.'));
+  if (!game.landed) { game.landed = true; output(m('Транспортировка завершена. Посадочная группа на поверхности планеты.', 'Transport complete. The landing party is on the planet surface.'), 'system'); }
+  else { game.landed = false; if (game.pendingCrystals) { game.pendingCrystals = false; game.crystals = true; output(m('Транспортировка завершена. Посадочная группа и добытые дилитиевые кристаллы вернулись на Enterprise.', 'Transport complete. The landing party and recovered dilithium crystals have returned to Enterprise.'), 'system'); } else output(m('Транспортировка завершена. Посадочная группа вернулась на Enterprise.', 'Transport complete. The landing party has returned to Enterprise.'), 'system'); }
   return afterAction(false);
 }
 function mine() {
-  if (!game.landed) return commandFailure('Добыча возможна только после высадки: orbit, затем transport.');
-  const planet = currentPlanet(); if (!planet) return commandFailure('Планета не обнаружена.');
-  if (!planet.quadrant.crystalsAvailable) return commandFailure('На этой планете нет дилитиевых кристаллов.');
-  if (game.minedPlanets.includes(planet.key)) return commandFailure('На этой планете уже добыто достаточно кристаллов.');
+  if (!game.landed) return commandFailure(m('Добыча возможна только после высадки: orbit, затем transport.', 'Mining is possible only after landing: orbit, then transport.'));
+  const planet = currentPlanet(); if (!planet) return commandFailure(m('Планета не обнаружена.', 'Planet not detected.'));
+  if (!planet.quadrant.crystalsAvailable) return commandFailure(m('На этой планете нет дилитиевых кристаллов.', 'There are no dilithium crystals on this planet.'));
+  if (game.minedPlanets.includes(planet.key)) return commandFailure(m('На этой планете уже добыто достаточно кристаллов.', 'Enough crystals have already been mined on this planet.'));
   const duration = 0.1 + 0.2 * planet.quadrant.planetClass;
   if (spendTime(duration)) return afterAction(false);
   game.minedPlanets.push(planet.key); game.pendingCrystals = true;
-  output(`Добыча завершена. Сырые дилитиевые кристаллы будут перенесены на Enterprise вместе с посадочной группой. Время −${duration.toFixed(1)}.`, 'system'); return afterAction(false);
+  output(m(`Добыча завершена. Сырые дилитиевые кристаллы будут перенесены на Enterprise вместе с посадочной группой. Время −${duration.toFixed(1)}.`, `Mining complete. Raw dilithium crystals will return to Enterprise with the landing party. Time −${duration.toFixed(1)}.`), 'system'); return afterAction(false);
 }
 function useCrystals(confirmed) {
-  if (game.landed) return commandFailure('Кристаллы находятся на Enterprise. Сначала верните посадочную группу: transport.');
-  if (!game.crystals) return commandFailure('На борту нет сырых дилитиевых кристаллов.');
-  if (game.energy >= 1000) return commandFailure('Starfleet запрещает использовать сырые кристаллы, пока энергия не ниже 1000.');
-  if (!confirmed) { output('Сырые дилитиевые кристаллы могут взорваться при включении. Для подтверждения введите: crystals confirm', 'alert'); save(); render(); return; }
+  if (game.landed) return commandFailure(m('Кристаллы находятся на Enterprise. Сначала верните посадочную группу: transport.', 'The crystals are on Enterprise. Return the landing party with transport first.'));
+  if (!game.crystals) return commandFailure(m('На борту нет сырых дилитиевых кристаллов.', 'There are no raw dilithium crystals aboard.'));
+  if (game.energy >= 1000) return commandFailure(m('Starfleet запрещает использовать сырые кристаллы, пока энергия не ниже 1000.', 'Starfleet forbids using raw crystals while energy is at or above 1000.'));
+  if (!confirmed) { output(m('Сырые дилитиевые кристаллы могут взорваться при включении. Для подтверждения введите: crystals confirm', 'Raw dilithium crystals may explode during activation. To confirm, enter: crystals confirm'), 'alert'); save(); render(); return; }
   game.crystals = false;
-  if (rand() < 0.08) { end('Сырые дилитиевые кристаллы разрушили энергетическую систему Enterprise.'); return afterAction(false); }
+  if (rand() < 0.08) { end(m('Сырые дилитиевые кристаллы разрушили энергетическую систему Enterprise.', 'Raw dilithium crystals destroyed Enterprise’s energy system.')); return afterAction(false); }
   const restored = Math.min(5000 - game.energy, 1800 + Math.round(rand(900))); game.energy += restored;
-  output(`Кристаллы активированы. Энергия восстановлена на ${restored} единиц.`, 'system'); return afterAction(false);
+  output(m(`Кристаллы активированы. Энергия восстановлена на ${restored} единиц.`, `Crystals activated. Energy restored by ${restored} units.`), 'system'); return afterAction(false);
 }
 function planetsReport() {
   const planets = game.map.filter(quadrant => quadrant.planet && quadrant.planetKnown);
-  if (!planets.length) { output('Обследованных планет пока нет.', 'system'); save(); render(); return; }
-  const lines = ['ИЗВЕСТНЫЕ ПЛАНЕТЫ'];
-  planets.forEach(quadrant => { ensurePlanetData(quadrant); lines.push(`Q${quadrant.x},${quadrant.y}  класс ${['M', 'N', 'O'][quadrant.planetClass - 1]}  дилитий: ${quadrant.crystalsAvailable ? 'есть' : 'нет'}`); });
+  if (!planets.length) { output(m('Обследованных планет пока нет.', 'No planets have been surveyed yet.'), 'system'); save(); render(); return; }
+  const lines = [m('ИЗВЕСТНЫЕ ПЛАНЕТЫ', 'KNOWN PLANETS')];
+  planets.forEach(quadrant => { ensurePlanetData(quadrant); lines.push(m(`Q${quadrant.x},${quadrant.y}  класс ${['M', 'N', 'O'][quadrant.planetClass - 1]}  дилитий: ${quadrant.crystalsAvailable ? 'есть' : 'нет'}`, `Q${quadrant.x},${quadrant.y}  class ${['M', 'N', 'O'][quadrant.planetClass - 1]}  dilithium: ${quadrant.crystalsAvailable ? 'present' : 'none'}`)); });
   output(lines.join('\n'), 'system'); save(); render();
 }
-function rest() { if (spendTime(0.5)) return afterAction(false); game.energy = Math.min(5000, game.energy + 250); output('Отдых завершён. Энергия частично восстановлена.', 'system'); afterAction(); }
+function rest() { if (spendTime(0.5)) return afterAction(false); game.energy = Math.min(5000, game.energy + 250); output(m('Отдых завершён. Энергия частично восстановлена.', 'Rest complete. Energy partially restored.'), 'system'); afterAction(); }
 function afterAction(enemies = true) {
   updateCondition();
   if (enemies && cell().k && !game.ended && rand() > 0.28) { const response = attack(); if (response) output(`${game.output.text}${response}`, game.output.kind); }
   game.sector = visibleSector(); save(); render();
 }
-function end(message) { game.ended = true; output(`КОНЕЦ МИССИИ\n${message}\nИтог: ${game.kills}/${game.initialEnemies} кораблей уничтожено.`, 'heading'); save(); }
+function end(message) { game.ended = true; output(m(`КОНЕЦ МИССИИ\n${message}\nИтог: ${game.kills}/${game.initialEnemies} кораблей уничтожено.`, `MISSION ENDED\n${message}\nFinal score: ${game.kills}/${game.initialEnemies} ships destroyed.`), 'heading'); save(); }
 function statusText() {
   if (ui.language === 'ru') return `СТАТУС ENTERPRISE\nЗвёздная дата: ${game.stardate.toFixed(1)}  |  Осталось: ${game.time.toFixed(1)}\nПозиция: Q${game.pos.qx},${game.pos.qy} / S${game.pos.sx},${game.pos.sy}\nСостояние: ${game.condition}\nЭнергия: ${Math.round(game.energy)}  Щиты: ${Math.round(game.shields)}  Торпеды: ${game.torps}\nОрбита: ${game.inOrbit ? 'стандартная' : 'нет'}  |  Посадочная группа: ${game.landed ? 'на планете' : 'на борту'}\nДилитиевые кристаллы: ${game.crystals ? 'на борту' : game.pendingCrystals ? 'у посадочной группы' : 'нет'}\nФлот: уничтожено ${game.kills} из ${game.initialEnemies}.`;
   return `ENTERPRISE STATUS\nStardate: ${game.stardate.toFixed(1)}  |  Remaining: ${game.time.toFixed(1)}\nPosition: Q${game.pos.qx},${game.pos.qy} / S${game.pos.sx},${game.pos.sy}\nCondition: ${game.condition}\nEnergy: ${Math.round(game.energy)}  Shields: ${Math.round(game.shields)}  Torpedoes: ${game.torps}\nOrbit: ${game.inOrbit ? 'standard' : 'none'}  |  Landing party: ${game.landed ? 'on planet' : 'on board'}\nDilithium crystals: ${game.crystals ? 'on board' : game.pendingCrystals ? 'with landing party' : 'none'}\nFleet: ${game.kills} of ${game.initialEnemies} destroyed.`;
@@ -381,21 +383,21 @@ function command(input) {
   if (cmd === 'status' || cmd === 'report') { output(statusText(), 'system'); afterAction(false); return; }
   if (cmd === 'phasers') return fire('phaser'); if (cmd === 'photons' || cmd === 'torpedoes') return fire('photon');
   if (cmd === 'shields') return shields(); if (cmd === 'dock') return dock(); if (cmd === 'orbit') return orbit(); if (cmd === 'transport') return transport(); if (cmd === 'mine') return mine(); if (cmd === 'crystals') return useCrystals(args[0] === 'confirm'); if (cmd === 'planets') return planetsReport(); if (cmd === 'rest') return rest();
-  if (cmd === 'save' || cmd === 'freeze') { output('Состояние миссии сохранено в браузере.', 'system'); save(); render(); return; }
+  if (cmd === 'save' || cmd === 'freeze') { output(m('Состояние миссии сохранено в браузере.', 'Mission state saved in this browser.'), 'system'); save(); render(); return; }
   if (cmd === 'move' || cmd === 'impulse') {
     const heading = dir(args[0]); if (heading) return move(...heading, false, args[1]);
     const coordinates = args.map(Number);
     if (coordinates.length === 2 && coordinates.every(Number.isInteger)) return moveTo(game.pos.qx, game.pos.qy, coordinates[0], coordinates[1]);
     if (coordinates.length === 4 && coordinates.every(Number.isInteger)) return moveTo(coordinates[0], coordinates[1], coordinates[2], coordinates[3]);
-    return commandFailure('Формат: move <направление> [число], move <sector X> <sector Y> или move <quadrant X> <quadrant Y> <sector X> <sector Y>.');
+    return commandFailure(m('Формат: move <направление> [число], move <sector X> <sector Y> или move <quadrant X> <quadrant Y> <sector X> <sector Y>.', 'Format: move <direction> [number], move <sector X> <sector Y>, or move <quadrant X> <quadrant Y> <sector X> <sector Y>.'));
   }
   if (cmd === 'warp') {
     const heading = dir(args[0]); if (heading) return move(...heading, true);
     const coordinates = args.map(Number); if (coordinates.length === 2 && coordinates.every(Number.isInteger)) return warpTo(coordinates[0], coordinates[1]);
-    return commandFailure('Формат: warp <направление> или warp <quadrant X> <quadrant Y>.');
+    return commandFailure(m('Формат: warp <направление> или warp <quadrant X> <quadrant Y>.', 'Format: warp <direction> or warp <quadrant X> <quadrant Y>.'));
   }
-  if (cmd === 'quit') { output('Миссия приостановлена и сохранена.', 'system'); save(); render(); return; }
-  commandFailure(`НЕРАСПОЗНАННАЯ КОМАНДА: ${cmd}. Введите HELP.`);
+  if (cmd === 'quit') { output(m('Миссия приостановлена и сохранена.', 'Mission paused and saved.'), 'system'); save(); render(); return; }
+  commandFailure(m(`НЕРАСПОЗНАННАЯ КОМАНДА: ${cmd}. Введите HELP.`, `UNKNOWN COMMAND: ${cmd}. Enter HELP.`));
 }
 
 function render() {
@@ -453,8 +455,8 @@ function bindGame() {
   document.querySelectorAll('[data-move]').forEach(button => button.onclick = () => move(...dir(button.dataset.move)));
   document.querySelectorAll('[data-view]').forEach(button => button.onclick = () => { ui.view = button.dataset.view; save(); render(); });
   bindLanguageButtons();
-  document.querySelectorAll('[data-quad]').forEach(button => button.onclick = () => { const [x, y] = button.dataset.quad.split(',').map(Number); const dx = x - game.pos.qx; const dy = y - game.pos.qy; if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1 && (dx || dy)) move(dx, dy, true); else commandFailure('Варп требует соседней цели.'); });
-  $('#save').onclick = () => { output('Сохранение подтверждено.', 'system'); save(); render(); }; $('#sound').onclick = toggleMusic;
+  document.querySelectorAll('[data-quad]').forEach(button => button.onclick = () => { const [x, y] = button.dataset.quad.split(',').map(Number); const dx = x - game.pos.qx; const dy = y - game.pos.qy; if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1 && (dx || dy)) move(dx, dy, true); else commandFailure(m('Варп требует соседней цели.', 'Warp requires an adjacent target.')); });
+  $('#save').onclick = () => { output(m('Сохранение подтверждено.', 'Save confirmed.'), 'system'); save(); render(); }; $('#sound').onclick = toggleMusic;
   $('#help').onclick = () => { ui.helpOpen = true; render(); }; $('#close-help')?.addEventListener('click', () => { ui.helpOpen = false; render(); });
   document.querySelectorAll('[data-help-topic]').forEach(button => button.onclick = () => { $('#help-detail').textContent = helpText(button.dataset.helpTopic); });
   $('#again')?.addEventListener('click', () => { clearSave(); ui.screen = 'setup'; ui.helpOpen = false; render(); }); $('#keep')?.addEventListener('click', () => { $('.modal')?.remove(); });
