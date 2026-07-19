@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 
 const source = `${fs.readFileSync('app.js', 'utf8')}
-globalThis.__sst = { newGame, cell, dir, move, moveTo, warpTo, fire, shields, dock, orbit, transport, mine, scan, galaxyText, renderSectorText, gameTemplate, actionsTemplate, crystalsModal, ensureLayout, visibleSector, command, helpText, setLanguage, get game() { return game; } };`;
+globalThis.__sst = { newGame, cell, dir, move, moveTo, warpTo, fire, shields, dock, orbit, transport, mine, scan, galaxyText, sectorRadarTemplate, galaxyChartTemplate, gameTemplate, actionsTemplate, crystalsModal, ensureLayout, visibleSector, command, helpText, setLanguage, get game() { return game; } };`;
 const storage = new Map();
 const math = Object.create(Math);
 let seed = 123456789;
@@ -22,9 +22,13 @@ assert.match(sst.actionsTemplate(), /data-action="crystals"/, 'Tactical Deck mus
 assert.match(sst.crystalsModal(), /crystals confirm/, 'crystals action must require explicit confirmation');
 for (const quadrant of game.map) { quadrant.layout = Array(100).fill('.'); quadrant.k = 0; }
 game.pos = { qx: 4, qy: 4, sx: 5, sy: 5 };
-const sectorHeader = sst.renderSectorText().split('\n')[0];
-assert.equal(sectorHeader.indexOf('1'), 4, 'local-sector label 1 must align with the first grid column');
-assert.equal(sectorHeader.indexOf('10'), 22, 'local-sector label 10 must align with the tenth grid column');
+const sectorRadar = sst.sectorRadarTemplate();
+assert.match(sectorRadar, /class="sector-radar-columns">[\s\S]*<span>10<\/span>/, 'local-sector column labels must use a dedicated grid axis');
+assert.match(sectorRadar, /class="sector-radar-rows">[\s\S]*<span>10<\/span>/, 'local-sector row labels must use a dedicated grid axis');
+assert.equal((sectorRadar.match(/<span>/g) || []).length, 120, 'local-sector grid must render 10 labels per axis and 100 sector cells');
+const galaxyChart = sst.galaxyChartTemplate();
+assert.match(galaxyChart, /class="galaxy-chart-heading">STAR CHART/, 'star-chart heading must be separate from its axes');
+assert.equal((galaxyChart.match(/<span>/g) || []).length, 80, 'star chart must render 8 labels per axis and 64 quadrant cells');
 
 for (const quadrant of game.map) { quadrant.known = false; quadrant.planetKnown = false; }
 const scannedIntel = sst.cell(3, 3);
