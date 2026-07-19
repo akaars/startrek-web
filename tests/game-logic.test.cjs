@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 
 const source = `${fs.readFileSync('app.js', 'utf8')}
-globalThis.__sst = { newGame, cell, dir, move, moveTo, warpTo, fire, shields, dock, orbit, transport, mine, scan, galaxyText, gameTemplate, actionsTemplate, crystalsModal, ensureLayout, visibleSector, command, helpText, setLanguage, get game() { return game; } };`;
+globalThis.__sst = { newGame, cell, dir, move, moveTo, warpTo, fire, shields, dock, orbit, transport, mine, scan, galaxyText, renderSectorText, gameTemplate, actionsTemplate, crystalsModal, ensureLayout, visibleSector, command, helpText, setLanguage, get game() { return game; } };`;
 const storage = new Map();
 const math = Object.create(Math);
 let seed = 123456789;
@@ -22,6 +22,9 @@ assert.match(sst.actionsTemplate(), /data-action="crystals"/, 'Tactical Deck mus
 assert.match(sst.crystalsModal(), /crystals confirm/, 'crystals action must require explicit confirmation');
 for (const quadrant of game.map) { quadrant.layout = Array(100).fill('.'); quadrant.k = 0; }
 game.pos = { qx: 4, qy: 4, sx: 5, sy: 5 };
+const sectorHeader = sst.renderSectorText().split('\n')[0];
+assert.equal(sectorHeader.indexOf('1'), 4, 'local-sector label 1 must align with the first grid column');
+assert.equal(sectorHeader.indexOf('10'), 22, 'local-sector label 10 must align with the tenth grid column');
 
 for (const quadrant of game.map) { quadrant.known = false; quadrant.planetKnown = false; }
 const scannedIntel = sst.cell(3, 3);
@@ -36,6 +39,9 @@ assert.equal(sst.cell(2, 2).known, false, 'long-range scan must not reveal dista
 assert.equal(scannedPlanet.planetKnown, true, 'long-range scan must survey planets in range');
 assert.match(game.output.text, /LONG-RANGE SCAN/, 'long-range scan must report its new role');
 assert.match(game.output.text, /214·/, 'long-range scan must report enemies, bases, and stars for scanned quadrants');
+const scanLines = game.output.text.split('\n');
+assert.equal(scanLines[2].indexOf('Q3'), 5, 'long-range scan column labels must be centred over the first grid cell');
+assert.equal(scanLines[2].indexOf('Q4'), 10, 'long-range scan column labels must retain the grid spacing');
 assert.match(sst.galaxyText(), /P/, 'surveyed planets must be marked on the galaxy chart');
 assert.equal(sst.galaxyText().split('\n')[1].indexOf('1'), 6, 'star-chart column labels must be centred over the first grid cell');
 
@@ -114,12 +120,19 @@ assert.equal(game.torps, 10, 'docking beside a starbase must replenish torpedoes
 sst.command('help move');
 assert.match(game.output.text, /move n 2/, 'contextual help must document the requested command');
 assert.match(sst.helpText('warp'), /Warp movement/, 'English must be the default language for help');
+assert.match(sst.helpText('move'), /0\.05 \+ d \/ 0\.95/, 'move help must document the impulse-time formula');
+assert.match(sst.helpText('warp'), /0\.14 \+ \(1\.5 × d\) \/ warp/, 'warp help must document the warp-time formula');
+assert.match(sst.helpText('mine'), /0\.1 \+ 0\.2 × planet class/, 'mine help must document the mining-time formula');
+assert.match(sst.helpText('rest'), /0\.5 stardates/, 'rest help must document its fixed time cost');
 assert.match(sst.helpText('warp'), /Warp factor/, 'warp help must explain warp-factor control');
 assert.match(sst.helpText(), /orbit · transport · mine · crystals · planets/, 'general help must include the planet commands');
 sst.command('help m');
 assert.match(game.output.text, /No help entry exists/, 'help must not expand a one-letter execution alias');
 sst.setLanguage('ru');
 assert.match(sst.helpText('warp'), /Варп-переход/, 'Russian help must be available when selected');
+assert.match(sst.helpText('move'), /0\.05 \+ d \/ 0\.95/, 'Russian move help must document the impulse-time formula');
+assert.match(sst.helpText('warp'), /0\.14 \+ \(1\.5 × d\) \/ warp/, 'Russian warp help must document the warp-time formula');
+assert.match(sst.helpText('mine'), /0\.1 \+ 0\.2 × класс планеты/, 'Russian mine help must document the mining-time formula');
 sst.scan();
 assert.match(game.output.text, /ДАЛЬНЕЕ СКАНИРОВАНИЕ/, 'Russian long-range scan output must be translated');
 sst.setLanguage('en');
