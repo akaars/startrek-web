@@ -145,6 +145,13 @@ sst.newGame({ length: 2, skill: 2, name: 'ALIAS' });
 const aliasGame = sst.game;
 for (const quadrant of aliasGame.map) { quadrant.layout = Array(100).fill('.'); quadrant.k = 0; }
 aliasGame.pos = { qx: 4, qy: 4, sx: 5, sy: 5 };
+const positionBeforeBareMove = { ...aliasGame.pos };
+sst.command('m');
+assert.deepEqual(aliasGame.pos, positionBeforeBareMove, 'bare m must not move Enterprise');
+assert.match(aliasGame.output.text, /Format: move/, 'bare m must report the required move arguments');
+sst.command('map');
+assert.deepEqual(aliasGame.pos, positionBeforeBareMove, 'map after bare m must not move Enterprise');
+assert.match(aliasGame.output.text, /UNKNOWN COMMAND: map/, 'map after bare m must report an unknown command');
 sst.command('m 2 2');
 assert.equal(aliasGame.pos.sx, 2, 'm must invoke move with sector coordinates');
 assert.equal(aliasGame.pos.sy, 2, 'm must preserve the move coordinate order');
